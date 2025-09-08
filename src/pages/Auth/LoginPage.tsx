@@ -17,7 +17,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import SecurityIcon from "@mui/icons-material/Security";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ShieldIcon from '@mui/icons-material/Shield';
+import LockOutlineIcon from "@mui/icons-material/LockOutline";
+import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
 import { Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 const LoginPage: React.FC = () => {
@@ -31,10 +32,11 @@ const LoginPage: React.FC = () => {
   const roleConfig = [
     {
       label: "End User",
-      emailLabel: "User Email",
+      emailLabel: "Email Address",
       emailPlaceholder: "alex.johnson@company.com",
       passwordPlaceholder: "Enter Your Password",
-      buttonText: "Sign In As User",
+      buttonText: "Sign In To Portal",
+      // buttonIcon: <PersonIcon sx={{ fontSize: "16px" }} />,
       buttonColor: "#2f5dff",
       notice: null,
     },
@@ -44,11 +46,13 @@ const LoginPage: React.FC = () => {
       emailPlaceholder: "sarah.wilson@company.com",
       passwordPlaceholder: "Enter Admin Password",
       buttonText: "Sign In As Admin",
+      buttonIcon: <SecurityIcon sx={{ fontSize: "16px" }} />,
       buttonColor: "#2ecc71",
+      color: "#2ecc71",
       notice: {
         type: "info",
         title: "Admin Access Notice",
-        description: "Read-only access to team management features",
+        description: "Read-only access toteam management features",
       },
     },
     {
@@ -57,10 +61,11 @@ const LoginPage: React.FC = () => {
       emailPlaceholder: "super.admin@company.com",
       passwordPlaceholder: "Enter Super Admin Password",
       buttonText: "Sign In As Super Admin",
-      buttonColor: "#ff4d4d",
+      buttonIcon: <AdminPanelSettingsIcon sx={{ fontSize: "16px" }} />,
+      buttonColor: "#ff7861",
       notice: {
         type: "warning",
-        title: "Super Admin Notice",
+        title: "Super Admin Access",
         description: "Full system access with member management privileges",
       },
     },
@@ -77,7 +82,6 @@ const LoginPage: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        p: 3,
       }}
     >
       {/* Logo & Header */}
@@ -113,28 +117,25 @@ const LoginPage: React.FC = () => {
       {/* Login Card */}
       <Card
         sx={{
-          maxWidth: 450,
+          maxWidth: 380,
           width: "100%",
-          borderRadius: 3,
-          boxShadow: 4,
+          borderRadius: 2,
+          boxShadow: 1,
         }}
       >
-        <CardContent sx={{ p: 4 }}>
+        <CardContent sx={{ p: 3 }}>
           {/* Title */}
           <Typography
             variant="h6"
-            fontWeight="bold"
             textAlign="center"
-            gutterBottom
+            sx={{ fontWeight: 600, fontSize: "20px" }}
           >
             Welcome Back
           </Typography>
           <Typography
             variant="body2"
             textAlign="center"
-            color="#838fa2"
-            fontSize="12px"
-            mb={3}
+            sx={{ color: "#838fa2", fontSize: "12px", mb: 2 }}
           >
             Access Your Service Management Dashboard
           </Typography>
@@ -144,29 +145,35 @@ const LoginPage: React.FC = () => {
             value={role}
             onChange={handleRoleChange}
             variant="fullWidth"
+            TabIndicatorProps={{ style: { display: "none" } }}
             sx={{
-              mb: 3,
+              mt: 5,
               "& .MuiTab-root": {
                 textTransform: "none",
+                fontSize: "13px",
                 fontWeight: 500,
-                fontSize: "14px",
-                borderRadius: 2,
-                minWidth: 120,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                borderRadius: 1,
+                minWidth: "auto",
+                color: "#838fa2",
+                px: 1.5,
                 whiteSpace: "nowrap",
               },
             }}
           >
-            <Tab icon={<PersonIcon />} iconPosition="start" label="End User" />
             <Tab
-              icon={<SecurityIcon />}
+              icon={<PersonIcon sx={{ fontSize: 16 }} />}
               iconPosition="start"
+              color={currentRole.color}
+              label="End User"
+            />
+            <Tab
+              icon={<SecurityIcon sx={{ fontSize: 16 }} />}
+              iconPosition="start"
+              color={currentRole.buttonColor}
               label="IT Admin"
             />
             <Tab
-              icon={<AdminPanelSettingsIcon />}
+              icon={<AdminPanelSettingsIcon sx={{ fontSize: 16 }} />}
               iconPosition="start"
               label="Super Admin"
             />
@@ -175,7 +182,12 @@ const LoginPage: React.FC = () => {
           {/* Email */}
           <FormControl fullWidth margin="normal">
             <FormLabel
-              sx={{ mb: 0.5, fontSize: "0.875rem", color: "text.secondary" }}
+              sx={{
+                mb: 0.5,
+                fontSize: "10px",
+                fontWeight: 600,
+                color: "text.secondary",
+              }}
             >
               {currentRole.emailLabel}
             </FormLabel>
@@ -186,7 +198,12 @@ const LoginPage: React.FC = () => {
               sx={{
                 "& .MuiInputBase-root": {
                   borderRadius: "8px",
-                  height: "42px",
+                  height: "35px",
+                  fontSize: "13px",
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#95affd",
+                    boxShadow: "0 0 5px rgba(149, 175, 253, 0.5)" // change to your desired color
+                  },
                 },
               }}
             />
@@ -195,7 +212,12 @@ const LoginPage: React.FC = () => {
           {/* Password */}
           <FormControl fullWidth margin="normal">
             <FormLabel
-              sx={{ mb: 0.5, fontSize: "0.875rem", color: "text.secondary" }}
+              sx={{
+                mb: 0.5,
+                fontSize: "10px",
+                fontWeight: 600,
+                color: "text.secondary",
+              }}
             >
               Password
             </FormLabel>
@@ -207,7 +229,12 @@ const LoginPage: React.FC = () => {
               sx={{
                 "& .MuiInputBase-root": {
                   borderRadius: "8px",
-                  height: "42px",
+                  height: "35px",
+                  fontSize: "13px",
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#95affd",
+                    boxShadow: "0 0 5px rgba(149, 175, 253, 0.5)" // change to your desired color
+                  },
                 },
               }}
             />
@@ -217,16 +244,25 @@ const LoginPage: React.FC = () => {
           <Button
             fullWidth
             variant="contained"
-            size="large"
-            startIcon={<ShieldIcon sx={{fontSize:"16px"}}/>}
-            endIcon={<ArrowForwardIosIcon sx={{ fontSize: "12px" }} />}
+            size="medium"
+            startIcon={currentRole.buttonIcon}
+            endIcon={
+              role === 0 ? (
+                <ArrowForwardIosIcon
+                  sx={{ fontSize: "10px", width: 12, height: 12 }}
+                />
+              ) : null
+            }
             sx={{
-              mt: 2,
-              borderRadius: 2,
-              bgcolor: "#2f5dff",
+              bgcolor: currentRole.buttonColor,
+              fontSize: "13px",
+              py: 1,
               textTransform: "none",
-              fontWeight: "bold",
-              "&:hover": { bgcolor: "#1a46d6" },
+              fontWeight: 600,
+              borderRadius: 1.5,
+              transition: "transform 0.3s ease, opacity 0.3s ease",
+              "&:hover": { bottom: 2, transform: "translateY(-1px)" },
+              mt: 1,
             }}
           >
             {currentRole.buttonText}
@@ -234,57 +270,99 @@ const LoginPage: React.FC = () => {
 
           {/* Role-specific Notice */}
           {currentRole.notice && (
-            <Alert
-              severity={currentRole.notice.type as "info" | "warning"}
-              sx={{ mt: 3, borderRadius: 2 }}
+            <Box
+              sx={{
+                mt: 2,
+                p: 2,
+                border: "1px solid #e0e6f0",
+                borderRadius: 2,
+                display: "flex",
+                alignItems: "flex-start",
+                bgcolor: "#fff",
+                mb: "30px"
+              }}
             >
-              <Typography fontWeight="bold" variant="body2">
-                {currentRole.notice.title}
-              </Typography>
-              <Typography variant="caption">
-                {currentRole.notice.description}
-              </Typography>
-            </Alert>
+              {/* Icon */}
+              {currentRole.notice.type === "info" && (
+                <InfoOutlineIcon
+                  sx={{ fontSize: 13, color: "#2f5dff", mr: 1, mt: 0.3 }}
+                />
+              )}
+              {currentRole.notice.type === "warning" && (
+                <LockOutlineIcon sx={{ fontSize: 13, mr: 1, mt: 0.3 }} />
+              )}
+              {/* Text */}
+              <Box>
+                <Typography fontSize="14px" color="text.primary">
+                  {currentRole.notice.title}
+                </Typography>
+                <Typography sx={{ fontSize: "10px", color: "#838fa2" }}>
+                  {currentRole.notice.description}
+                </Typography>
+              </Box>
+            </Box>
           )}
 
-          {/* Forgot Password */}
-          <Box textAlign="center" mt={2}>
-            <Link
-              to={"/"}
-              style={{
-                fontFamily: "Inter, sans-serif",
-                textDecoration: "none",
-                color: "#3868fc",
-                fontSize: "14px",
-                fontWeight: 500,
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.textDecoration = "underline")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.textDecoration = "none")
-              }
-            >
-              Forgot Your Password?
-            </Link>
-            <Typography
-              variant="caption"
-              display="block"
-              mt={1}
-              color="text.secondary"
-            >
-              Need Help? Contact Your IT Department
-            </Typography>
-          </Box>
+          {/* Forgot Password - only for End User */}
+          {role === 0 && (
+            <Box textAlign="center" mt={2}>
+              <Link
+                to={"/"}
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  textDecoration: "none",
+                  color: "#2f5dff",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.textDecoration = "underline")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.textDecoration = "none")
+                }
+              >
+                Forgot Your Password?
+              </Link>
+              <Typography
+                variant="caption"
+                display="block"
+                sx={{ mt: 1, color: "#838fa2", fontSize: "10px", mb:"30px"}}
+              >
+                Need Help? Contact Your IT Department
+              </Typography>
+            </Box>
+          )}
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 2 }} />
 
           {/* Single Sign-On */}
-          <Button fullWidth variant="outlined" sx={{ borderRadius: 2 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{
+              borderColor: "#e0e6f0",
+              borderRadius: 2,
+              color: "#000",
+              textTransform: "none",
+              fontSize: "13px",
+            }}
+          >
             Continue With Single Sign-On
           </Button>
         </CardContent>
       </Card>
+      <Box textAlign="center" mt={2}>
+        <Typography
+          variant="caption"
+          sx={{
+            color: "#6b7280",
+            fontSize: "10px",
+          }}
+        >
+          © 2024 ITSM Portal • Secure & Efficient IT Management
+        </Typography>
+      </Box>
     </Box>
   );
 };
