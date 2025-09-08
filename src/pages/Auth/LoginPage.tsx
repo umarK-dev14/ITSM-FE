@@ -250,7 +250,8 @@ const LoginPage: React.FC = () => {
               textTransform: "none",
               fontWeight: 600,
               borderRadius: 1.5,
-              "&:hover": { opacity: 0.9 },
+              transition: "transform 0.3s ease, opacity 0.3s ease",
+              "&:hover": { bottom:2, transform: "translateY(-1px)"},
               mt: 1,
             }}
           >
