@@ -279,6 +279,7 @@ const LoginPage: React.FC = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 bgcolor: "#fff",
+                mb: "30px"
               }}
             >
               {/* Icon */}
@@ -326,7 +327,7 @@ const LoginPage: React.FC = () => {
               <Typography
                 variant="caption"
                 display="block"
-                sx={{ mt: 1, color: "#838fa2", fontSize: "10px" }}
+                sx={{ mt: 1, color: "#838fa2", fontSize: "10px", mb:"30px"}}
               >
                 Need Help? Contact Your IT Department
               </Typography>
