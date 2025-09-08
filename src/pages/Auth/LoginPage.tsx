@@ -200,6 +200,10 @@ const LoginPage: React.FC = () => {
                   borderRadius: "8px",
                   height: "35px",
                   fontSize: "13px",
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#95affd",
+                    boxShadow: "0 0 5px rgba(149, 175, 253, 0.5)" // change to your desired color
+                  },
                 },
               }}
             />
@@ -227,6 +231,10 @@ const LoginPage: React.FC = () => {
                   borderRadius: "8px",
                   height: "35px",
                   fontSize: "13px",
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#95affd",
+                    boxShadow: "0 0 5px rgba(149, 175, 253, 0.5)" // change to your desired color
+                  },
                 },
               }}
             />
@@ -240,7 +248,9 @@ const LoginPage: React.FC = () => {
             startIcon={currentRole.buttonIcon}
             endIcon={
               role === 0 ? (
-                <ArrowForwardIosIcon sx={{ fontSize: "10px", width: 12, height: 12 }} />
+                <ArrowForwardIosIcon
+                  sx={{ fontSize: "10px", width: 12, height: 12 }}
+                />
               ) : null
             }
             sx={{
@@ -251,7 +261,7 @@ const LoginPage: React.FC = () => {
               fontWeight: 600,
               borderRadius: 1.5,
               transition: "transform 0.3s ease, opacity 0.3s ease",
-              "&:hover": { bottom:2, transform: "translateY(-1px)"},
+              "&:hover": { bottom: 2, transform: "translateY(-1px)" },
               mt: 1,
             }}
           >
@@ -303,7 +313,6 @@ const LoginPage: React.FC = () => {
                   color: "#2f5dff",
                   fontSize: "13px",
                   fontWeight: 500,
-
                 }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.textDecoration = "underline")
@@ -324,7 +333,7 @@ const LoginPage: React.FC = () => {
             </Box>
           )}
 
-          <Divider sx={{my: 2}} />
+          <Divider sx={{ my: 2 }} />
 
           {/* Single Sign-On */}
           <Button
@@ -335,7 +344,7 @@ const LoginPage: React.FC = () => {
               borderRadius: 2,
               color: "#000",
               textTransform: "none",
-              fontSize:"13px"
+              fontSize: "13px",
             }}
           >
             Continue With Single Sign-On
