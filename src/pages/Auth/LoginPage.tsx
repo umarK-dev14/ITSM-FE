@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
       buttonColor: "#ff7861",
       notice: {
         type: "warning",
-        title: "Super Admin Notice",
+        title: "Super Admin Access",
         description: "Full system access with member management privileges",
       },
     },
