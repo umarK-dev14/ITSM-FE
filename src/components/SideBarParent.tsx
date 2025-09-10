@@ -55,7 +55,7 @@ const SideBarParent = ({ isCollapsed, toggleSidebar }:any) => {
     <Drawer
       variant="permanent"
       sx={{
-        width: isCollapsed ? 60 : 220,
+        width: isCollapsed ? 60 : 0,
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: {
           width: isCollapsed ? 60 : 220,
