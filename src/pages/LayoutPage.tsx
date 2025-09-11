@@ -1,28 +1,31 @@
 import React, { useState } from "react";
-import { Box, Toolbar } from "@mui/material"
+import { Box, Toolbar } from "@mui/material";
 import SideBarParent from "../components/SideBarParent";
 import HeaderParent from "../components/HeaderParent";
 
-export default function Layout({ children }: any) {
+
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const toggleSidebar = () => setIsCollapsed((s) => !s);
-  const sidebarWidth = isCollapsed ? 60 : 220;
+
+  const toggleSidebar = () => setIsCollapsed((prev) => !prev);
+  const sidebarWidth = isCollapsed ? 0 : 0;
 
   return (
     <Box sx={{ display: "flex" }}>
       <SideBarParent isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
-      <HeaderParent isCollapsed={isCollapsed} />
+      <HeaderParent isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
 
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 1,
-          ml: `${sidebarWidth}px`, 
+          p: 2,
+          mt: 1,
+          ml: { xs: 0, sm: `${sidebarWidth}px` },
           transition: "margin 0.3s ease",
         }}
       >
-        <Toolbar sx={{minHeight: 64}} />
+        <Toolbar sx={{ minHeight: 64 }} />
         {children}
       </Box>
     </Box>
