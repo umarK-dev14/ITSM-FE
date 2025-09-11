@@ -11,22 +11,28 @@ import {
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AddIcon from "@mui/icons-material/Add";
 import { useLocation } from "react-router-dom";
-import MenuToggle from "./MenuToggle"; 
+import MenuToggle from "./MenuToggle";
 
 interface HeaderParentProps {
   isCollapsed: boolean;
   toggleSidebar: () => void;
 }
 
-export default function HeaderParent({ isCollapsed, toggleSidebar }: HeaderParentProps) {
+export default function HeaderParent({
+  isCollapsed,
+  toggleSidebar,
+}: HeaderParentProps) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
-  
+
   const pageTitles: Record<string, string> = {
     "/dashboard": "Dashboard",
     "/tickets": "My Tickets",
     "/create-ticket": "Create Ticket",
+    "/create-ticket/requesttype": "Create Ticket",
+    "/create-ticket/category": "Create Ticket",
+    "/create-ticket/ticketdetails": "Create Ticket",
     "/self-service": "Self Service",
     "/faq": "FAQ",
     "/assistant": "AI Assistant",
@@ -57,7 +63,6 @@ export default function HeaderParent({ isCollapsed, toggleSidebar }: HeaderParen
           alignItems: "center",
         }}
       >
-
         <Box display="flex" alignItems="center" gap={2}>
           {isSmallScreen && <MenuToggle onClick={toggleSidebar} />}
 
@@ -80,7 +85,14 @@ export default function HeaderParent({ isCollapsed, toggleSidebar }: HeaderParen
         <Box display="flex" alignItems="center" gap={2}>
           {isSmallScreen ? (
             <>
-              <IconButton sx={{ color: "black", borderRadius: 2, boxShadow: 1, border:1 }}>
+              <IconButton
+                sx={{
+                  color: "black",
+                  borderRadius: 2,
+                  boxShadow: 1,
+                  border: 1,
+                }}
+              >
                 <NotificationsNoneIcon />
               </IconButton>
               <IconButton

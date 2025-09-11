@@ -16,7 +16,7 @@ import { useTicket } from "../../context/ticket-context";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#43d36b",
+      main: "#2f5dff",
     },
     secondary: {
       main: "#666",
@@ -27,7 +27,7 @@ const theme = createTheme({
   },
 });
 
-const steps = ["/create-ticket/requesttype", "/create-ticket/category"];
+const steps = ["/create-ticket/requesttype", "/create-ticket/category", "/create-ticket/ticketdetails"];
 const totalSteps = steps.length;
 const CreateTickets: React.FC = () => {
   const { selectedType, selectedCategory } = useTicket();
