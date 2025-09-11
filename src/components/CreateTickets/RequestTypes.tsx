@@ -1,16 +1,15 @@
-import React from "react";
-// import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
-// import GroupIcon from "@mui/icons-material/Group";
-// import LightbulbIcon from "@mui/icons-material/Lightbulb";
-// import SettingsIcon from "@mui/icons-material/Settings";
-// import DevicesIcon from "@mui/icons-material/Devices";
-// import MenuBookIcon from "@mui/icons-material/MenuBook";
+import React, { useContext, useEffect, type ReactNode } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import StepCards from "./StepCards";
 import { useTicket } from "../../context/ticket-context";
+import { useTicketAPI } from "../../Apis/ticket.API";
 
 const RequestTypes: React.FC = ({}) => {
-    const {selectedType, setSelectedType,requestData} =  useTicket()
+  const { selectedType, setSelectedType, requestData } = useTicket();
+  const { fetchRequestTypes } = useTicketAPI();
+  useEffect(() => {
+    fetchRequestTypes();
+  }, [fetchRequestTypes]);
   return (
     <Box sx={{ p: 4 }}>
       <Typography
@@ -29,7 +28,7 @@ const RequestTypes: React.FC = ({}) => {
       </Typography>
 
       <Grid container spacing={2} columns={12}>
-        {requestData.map((item:any) => (
+        {requestData.map((item: any) => (
           <Grid key={item.ID} size={{ xs: 12, sm: 6 }}>
             <StepCards
               icon={item.icon}
