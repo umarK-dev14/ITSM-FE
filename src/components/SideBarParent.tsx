@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Drawer,
   List,
@@ -142,7 +143,6 @@ const drawerContent = (
               {!isCollapsed && <ListItemText primary="Profile"/>}
             </ListItemButton>
           </ListItem>
-
           <ListItem disablePadding>
             <ListItemButton sx={getMenuButtonStyle(true)}>
               <ListItemIcon sx={{...menuIconStyle, fontSize: 11}}>

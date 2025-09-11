@@ -3,8 +3,7 @@ import Swal from "sweetalert2";
 import { useCallback, useEffect } from "react";
 import { useTicket } from "../context/ticket-context";
 
-const API_BASE_URL =
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const API_BASE_URL = import.meta.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
 
 export const useTicketAPI = () => {
     // include login here if needed by loginUser

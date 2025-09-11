@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AddIcon from "@mui/icons-material/Add";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useLocation } from "react-router-dom";
 import MenuToggle from "./MenuToggle";
 
@@ -125,7 +126,6 @@ export default function HeaderParent({
               >
                 Notifications
               </Button>
-
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
