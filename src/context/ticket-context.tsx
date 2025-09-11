@@ -1,6 +1,6 @@
 "use client";
 import type React from "react";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 
 interface TicketDetails {
   title: string;
@@ -22,11 +22,23 @@ interface TicketDetails {
 //   Categories: Category[];
 // }
 
-// interface RequestData {
-//   requestTypes: RequestType[];
-// }
+interface User {
+  ID: number;
+  USERNAME: string;
+  EMAIL: string;
+  PHONE_NUM: string;
+  DEPARTMENT_ID: number;
+  REGION: string;
+}
 
 interface TicketContextType {
+  // 🔹 Auth state
+  user: User | null;
+  token: string | null;
+  login: (user: User, token: string) => void;
+  logout: () => void;
+
+  // 🔹 Ticket state
   selectedType: number | null;
   selectedCategory: number | null;
   ticketDetails: TicketDetails;
@@ -86,6 +98,9 @@ interface TicketProviderProps {
 }
 
 export const TicketProvider: React.FC<TicketProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+
   const [selectedType, setSelectedType] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [ticketDetails, setTicketDetails] = useState<TicketDetails>({
@@ -94,186 +109,60 @@ export const TicketProvider: React.FC<TicketProviderProps> = ({ children }) => {
     priority:"",
     priority_no:""
   });
-  const responseData = {
-    message: "Request Types with categories fetched successfully",
-    data: [
-      {
-        ID: 1,
-        NAME: "Incident",
-        DESCRIPTION: "Something is broken and needs to be fixed",
-        createdAt: "2025-09-08T09:37:49.857Z",
-        updatedAt: "2025-09-08T09:37:49.857Z",
-        Categories: [
-          {
-            ID: 1,
-            NAME: "Network",
-            REQUEST_TYPE_ID: 1,
-          },
-          {
-            ID: 2,
-            NAME: "Email",
-            REQUEST_TYPE_ID: 1,
-          },
-          {
-            ID: 3,
-            NAME: "Hardware",
-            REQUEST_TYPE_ID: 1,
-          },
-          {
-            ID: 4,
-            NAME: "Software",
-            REQUEST_TYPE_ID: 1,
-          },
-          {
-            ID: 5,
-            NAME: "Security",
-            REQUEST_TYPE_ID: 1,
-          },
-          {
-            ID: 6,
-            NAME: "Access",
-            REQUEST_TYPE_ID: 1,
-          },
-        ],
-      },
-      {
-        ID: 2,
-        NAME: "Service Request",
-        DESCRIPTION: "Request for something new or a change",
-        createdAt: "2025-09-08T09:37:49.857Z",
-        updatedAt: "2025-09-08T09:37:49.857Z",
-        Categories: [
-          {
-            ID: 7,
-            NAME: "Software Installation",
-            REQUEST_TYPE_ID: 2,
-          },
-          {
-            ID: 8,
-            NAME: "Hardware Request",
-            REQUEST_TYPE_ID: 2,
-          },
-          {
-            ID: 9,
-            NAME: "Access Request",
-            REQUEST_TYPE_ID: 2,
-          },
-          {
-            ID: 10,
-            NAME: "Account Setup",
-            REQUEST_TYPE_ID: 2,
-          },
-        ],
-      },
-      {
-        ID: 3,
-        NAME: "Problem",
-        DESCRIPTION: "Root cause analysis needed",
-        createdAt: "2025-09-08T09:37:49.857Z",
-        updatedAt: "2025-09-08T09:37:49.857Z",
-        Categories: [
-          {
-            ID: 11,
-            NAME: "Recurring Issues",
-            REQUEST_TYPE_ID: 3,
-          },
-          {
-            ID: 12,
-            NAME: "Performance",
-            REQUEST_TYPE_ID: 3,
-          },
-          {
-            ID: 13,
-            NAME: "System Analysis",
-            REQUEST_TYPE_ID: 3,
-          },
-        ],
-      },
-      {
-        ID: 4,
-        NAME: "Change Request",
-        DESCRIPTION: "Planned change to IT services",
-        createdAt: "2025-09-08T09:37:49.857Z",
-        updatedAt: "2025-09-08T09:37:49.857Z",
-        Categories: [
-          {
-            ID: 14,
-            NAME: "System Updates",
-            REQUEST_TYPE_ID: 4,
-          },
-          {
-            ID: 15,
-            NAME: "Configuration Changes",
-            REQUEST_TYPE_ID: 4,
-          },
-          {
-            ID: 16,
-            NAME: "Infrastructure",
-            REQUEST_TYPE_ID: 4,
-          },
-        ],
-      },
-      {
-        ID: 5,
-        NAME: "Asset Request",
-        DESCRIPTION: "Request for hardware or software\r\n\r\n",
-        createdAt: "2025-09-08T09:37:49.857Z",
-        updatedAt: "2025-09-08T09:37:49.857Z",
-        Categories: [
-          {
-            ID: 17,
-            NAME: "Laptop",
-            REQUEST_TYPE_ID: 5,
-          },
-          {
-            ID: 18,
-            NAME: "Desktop",
-            REQUEST_TYPE_ID: 5,
-          },
-          {
-            ID: 19,
-            NAME: "Mobile Device",
-            REQUEST_TYPE_ID: 5,
-          },
-          {
-            ID: 20,
-            NAME: "Software License",
-            REQUEST_TYPE_ID: 5,
-          },
-        ],
-      },
-      {
-        ID: 6,
-        NAME: "Knowledge Suggestion",
-        DESCRIPTION: "Suggest an improvement to documentation",
-        createdAt: "2025-09-08T09:37:49.857Z",
-        updatedAt: "2025-09-08T09:37:49.857Z",
-        Categories: [
-          {
-            ID: 21,
-            NAME: "Process Improvement",
-            REQUEST_TYPE_ID: 6,
-          },
-          {
-            ID: 22,
-            NAME: "Documentation",
-            REQUEST_TYPE_ID: 6,
-          },
-          {
-            ID: 23,
-            NAME: "Training",
-            REQUEST_TYPE_ID: 6,
-          },
-        ],
-      },
-    ],
-  };
-  const [requestData, setRequestData] = useState(responseData.data);
+  
 
+  const [requestData, setRequestData] = useState([]);
+
+  // Load token + user from localStorage on mount (client-side only)
+  useEffect(() => {
+    try {
+      const savedToken = localStorage.getItem("authToken");
+      const savedUser = localStorage.getItem("authUser");
+      if (savedToken) {
+        setToken(savedToken);
+      }
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
+      }
+    } catch (e) {
+      // ignore localStorage errors
+      console.warn("ticket-context: failed to load auth from localStorage", e);
+    }
+  }, []);
+
+  // 🔹 Auth actions
+  const login = (user: User, restoken: string) => {
+    try {
+      setUser(user);
+      setToken(restoken);
+      localStorage.setItem("authToken", restoken);
+      localStorage.setItem("authUser", JSON.stringify(user));
+    } catch (e) {
+      console.warn("ticket-context: failed to persist auth to localStorage", e);
+    }
+
+    // debug - log the fresh token passed in (avoid logging state variable directly)
+    console.log("User logged in with token:", restoken);
+  };
+
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+    try {
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("authUser");
+    } catch (e) {
+      console.warn("ticket-context: failed to clear localStorage on logout", e);
+    }
+  };
 
   return (
     <TicketContext.Provider
       value={{
+        user,
+        token,
+        login,
+        logout,
         selectedType,
         selectedCategory,
         ticketDetails,

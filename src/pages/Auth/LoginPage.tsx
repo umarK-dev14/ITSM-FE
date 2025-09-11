@@ -19,13 +19,37 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import LockOutlineIcon from "@mui/icons-material/LockOutline";
 import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
-import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useTicketAPI } from "../../Apis/ticket.API";
+
 const LoginPage: React.FC = () => {
   const [role, setRole] = useState(0); // 0 = End User, 1 = IT Admin, 2 = Super Admin
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const { loginUser } = useTicketAPI();
 
   const handleRoleChange = (event: React.SyntheticEvent, newValue: number) => {
     setRole(newValue);
+  };
+
+  const handleLogin = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await loginUser(email, password);
+      console.log("✅ Login successful:", res);
+
+      // token + user are stored in context by loginUser
+      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Role-based placeholders & labels
@@ -36,7 +60,6 @@ const LoginPage: React.FC = () => {
       emailPlaceholder: "alex.johnson@company.com",
       passwordPlaceholder: "Enter Your Password",
       buttonText: "Sign In To Portal",
-      // buttonIcon: <PersonIcon sx={{ fontSize: "16px" }} />,
       buttonColor: "#2f5dff",
       notice: null,
     },
@@ -52,7 +75,7 @@ const LoginPage: React.FC = () => {
       notice: {
         type: "info",
         title: "Admin Access Notice",
-        description: "Read-only access toteam management features",
+        description: "Read-only access to team management features",
       },
     },
     {
@@ -88,13 +111,9 @@ const LoginPage: React.FC = () => {
       <Box textAlign="center" mb={4}>
         <Box
           component="img"
-          src="/assets/itsm-logo.png" // 👈 place your logo in public/assets
+          src="/assets/itsm-logo.png"
           alt="ITSM Logo"
-          sx={{
-            width: 80,
-            height: 80,
-            mb: 2,
-          }}
+          sx={{ width: 80, height: 80, mb: 2 }}
         />
         <Typography
           variant="h4"
@@ -115,16 +134,8 @@ const LoginPage: React.FC = () => {
       </Box>
 
       {/* Login Card */}
-      <Card
-        sx={{
-          maxWidth: 380,
-          width: "100%",
-          borderRadius: 2,
-          boxShadow: 1,
-        }}
-      >
+      <Card sx={{ maxWidth: 380, width: "100%", borderRadius: 2, boxShadow: 1 }}>
         <CardContent sx={{ p: 3 }}>
-          {/* Title */}
           <Typography
             variant="h6"
             textAlign="center"
@@ -163,13 +174,11 @@ const LoginPage: React.FC = () => {
             <Tab
               icon={<PersonIcon sx={{ fontSize: 16 }} />}
               iconPosition="start"
-              color={currentRole.color}
               label="End User"
             />
             <Tab
               icon={<SecurityIcon sx={{ fontSize: 16 }} />}
               iconPosition="start"
-              color={currentRole.buttonColor}
               label="IT Admin"
             />
             <Tab
@@ -181,17 +190,12 @@ const LoginPage: React.FC = () => {
 
           {/* Email */}
           <FormControl fullWidth margin="normal">
-            <FormLabel
-              sx={{
-                mb: 0.5,
-                fontSize: "10px",
-                fontWeight: 600,
-                color: "text.secondary",
-              }}
-            >
+            <FormLabel sx={{ mb: 0.5, fontSize: "10px", fontWeight: 600 }}>
               {currentRole.emailLabel}
             </FormLabel>
             <TextField
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder={currentRole.emailPlaceholder}
               variant="outlined"
               size="small"
@@ -200,10 +204,6 @@ const LoginPage: React.FC = () => {
                   borderRadius: "8px",
                   height: "35px",
                   fontSize: "13px",
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#95affd",
-                    boxShadow: "0 0 5px rgba(149, 175, 253, 0.5)" // change to your desired color
-                  },
                 },
               }}
             />
@@ -211,18 +211,13 @@ const LoginPage: React.FC = () => {
 
           {/* Password */}
           <FormControl fullWidth margin="normal">
-            <FormLabel
-              sx={{
-                mb: 0.5,
-                fontSize: "10px",
-                fontWeight: 600,
-                color: "text.secondary",
-              }}
-            >
+            <FormLabel sx={{ mb: 0.5, fontSize: "10px", fontWeight: 600 }}>
               Password
             </FormLabel>
             <TextField
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder={currentRole.passwordPlaceholder}
               variant="outlined"
               size="small"
@@ -231,14 +226,17 @@ const LoginPage: React.FC = () => {
                   borderRadius: "8px",
                   height: "35px",
                   fontSize: "13px",
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#95affd",
-                    boxShadow: "0 0 5px rgba(149, 175, 253, 0.5)" // change to your desired color
-                  },
                 },
               }}
             />
           </FormControl>
+
+          {/* Error Message */}
+          {error && (
+            <Alert severity="error" sx={{ mt: 2, fontSize: "13px" }}>
+              {error}
+            </Alert>
+          )}
 
           {/* Sign In Button */}
           <Button
@@ -246,11 +244,11 @@ const LoginPage: React.FC = () => {
             variant="contained"
             size="medium"
             startIcon={currentRole.buttonIcon}
+            onClick={handleLogin}
+            disabled={loading}
             endIcon={
               role === 0 ? (
-                <ArrowForwardIosIcon
-                  sx={{ fontSize: "10px", width: 12, height: 12 }}
-                />
+                <ArrowForwardIosIcon sx={{ fontSize: "10px", width: 12, height: 12 }} />
               ) : null
             }
             sx={{
@@ -260,12 +258,10 @@ const LoginPage: React.FC = () => {
               textTransform: "none",
               fontWeight: 600,
               borderRadius: 1.5,
-              transition: "transform 0.3s ease, opacity 0.3s ease",
-              "&:hover": { bottom: 2, transform: "translateY(-1px)" },
               mt: 1,
             }}
           >
-            {currentRole.buttonText}
+            {loading ? "Signing In..." : currentRole.buttonText}
           </Button>
 
           {/* Role-specific Notice */}
@@ -279,23 +275,17 @@ const LoginPage: React.FC = () => {
                 display: "flex",
                 alignItems: "flex-start",
                 bgcolor: "#fff",
-                mb: "30px"
+                mb: "30px",
               }}
             >
-              {/* Icon */}
               {currentRole.notice.type === "info" && (
-                <InfoOutlineIcon
-                  sx={{ fontSize: 13, color: "#2f5dff", mr: 1, mt: 0.3 }}
-                />
+                <InfoOutlineIcon sx={{ fontSize: 13, color: "#2f5dff", mr: 1 }} />
               )}
               {currentRole.notice.type === "warning" && (
-                <LockOutlineIcon sx={{ fontSize: 13, mr: 1, mt: 0.3 }} />
+                <LockOutlineIcon sx={{ fontSize: 13, mr: 1 }} />
               )}
-              {/* Text */}
               <Box>
-                <Typography fontSize="14px" color="text.primary">
-                  {currentRole.notice.title}
-                </Typography>
+                <Typography fontSize="14px">{currentRole.notice.title}</Typography>
                 <Typography sx={{ fontSize: "10px", color: "#838fa2" }}>
                   {currentRole.notice.description}
                 </Typography>
@@ -309,25 +299,18 @@ const LoginPage: React.FC = () => {
               <Link
                 to={"/"}
                 style={{
-                  fontFamily: "Inter, sans-serif",
                   textDecoration: "none",
                   color: "#2f5dff",
                   fontSize: "13px",
                   fontWeight: 500,
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.textDecoration = "underline")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.textDecoration = "none")
-                }
               >
                 Forgot Your Password?
               </Link>
               <Typography
                 variant="caption"
                 display="block"
-                sx={{ mt: 1, color: "#838fa2", fontSize: "10px", mb:"30px"}}
+                sx={{ mt: 1, color: "#838fa2", fontSize: "10px", mb: "30px" }}
               >
                 Need Help? Contact Your IT Department
               </Typography>
@@ -352,14 +335,9 @@ const LoginPage: React.FC = () => {
           </Button>
         </CardContent>
       </Card>
+
       <Box textAlign="center" mt={2}>
-        <Typography
-          variant="caption"
-          sx={{
-            color: "#6b7280",
-            fontSize: "10px",
-          }}
-        >
+        <Typography variant="caption" sx={{ color: "#6b7280", fontSize: "10px" }}>
           © 2024 ITSM Portal • Secure & Efficient IT Management
         </Typography>
       </Box>
