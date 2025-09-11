@@ -61,19 +61,14 @@ const TicketDetails: React.FC = () => {
       priority: priorityText,
     });
 
-    // console.log("Type:",selectedType);
-    // console.log("Category:",selectedCategory);
-    // console.log("Title:",ticketDetails.title);
-    // console.log("Description:",ticketDetails.description);
+    // console.log("Type:", selectedType);
+    // console.log("Category:", selectedCategory);
+    // console.log("Title:", ticketDetails.title);
+    // console.log("Description:", ticketDetails.description);
     // console.log("Selected Priority:", priorityText);
     // console.log("Priority Number:", priority_no);
     // console.log({ Type: selectedType, Category: selectedCategory, ...ticketDetails });
-  }, [
-    ticketDetails.title,
-    ticketDetails.description,
-    priority.level,
-    setTicketDetails,
-  ]);
+  }, [priority]);
 
   return (
     <Box sx={{ p: 3 }}>
