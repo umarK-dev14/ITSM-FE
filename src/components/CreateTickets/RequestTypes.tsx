@@ -1,16 +1,16 @@
-import React, { useContext, type ReactNode } from "react";
-import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
-import GroupIcon from "@mui/icons-material/Group";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import SettingsIcon from "@mui/icons-material/Settings";
-import DevicesIcon from "@mui/icons-material/Devices";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
+import React from "react";
+// import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
+// import GroupIcon from "@mui/icons-material/Group";
+// import LightbulbIcon from "@mui/icons-material/Lightbulb";
+// import SettingsIcon from "@mui/icons-material/Settings";
+// import DevicesIcon from "@mui/icons-material/Devices";
+// import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { Box, Grid, Typography } from "@mui/material";
 import StepCards from "./StepCards";
 import { useTicket } from "../../context/ticket-context";
 
 const RequestTypes: React.FC = ({}) => {
-    const {selectedType, setSelectedType,requestData,setRequestData} =  useTicket()
+    const {selectedType, setSelectedType,requestData} =  useTicket()
   return (
     <Box sx={{ p: 4 }}>
       <Typography
