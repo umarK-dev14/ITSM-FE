@@ -7,6 +7,7 @@ import CategoryStep from "./components/CreateTickets/CategoryStep";
 import { TicketProvider } from "./context/ticket-context";
 import DashboardPage from "./pages/DashboardPage";
 import TicketDetails from "./components/CreateTickets/TicketDetails";
+import MyTicketPage from "./pages/MyTicketPage";
 
 const App: React.FC = (): JSX.Element => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = (): JSX.Element => {
         {/* public route */}
         <Route path="/" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/tickets" element={<MyTicketPage/>} />
         {/* protected / authenticated routes */}
         <Route path="/create-ticket" element={<CreateTicketPage />}>
           <Route index element={<Navigate to="requesttype" replace />} />

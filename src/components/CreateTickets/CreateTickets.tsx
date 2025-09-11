@@ -56,6 +56,7 @@ const CreateTickets: React.FC = () => {
     if (location.pathname === "/create-ticket/category") {
       return selectedCategory !== null;
     }
+
     return true;
   };
 
