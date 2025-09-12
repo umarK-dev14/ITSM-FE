@@ -1,6 +1,12 @@
 "use client";
 import type React from "react";
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 
 interface TicketDetails {
   title: string;
@@ -9,18 +15,18 @@ interface TicketDetails {
   priority_no: string;
 }
 
-// interface Category {
-//   ID: number;
-//   NAME: string;
-//   REQ_TYPE_ID: number;
-// }
+interface Category {
+  ID: number;
+  NAME: string;
+  REQ_TYPE_ID: number;
+}
 
-// interface RequestType {
-//   ID: number;
-//   NAME: string;
-//   DESCRIPTION: string;
-//   Categories: Category[];
-// }
+interface RequestType {
+  ID: number;
+  NAME: string;
+  DESCRIPTION: string;
+  Categories: Category[];
+}
 
 interface User {
   ID: number;
@@ -39,13 +45,13 @@ interface TicketContextType {
   logout: () => void;
 
   // 🔹 Ticket state
-  selectedType: any;
-  selectedCategory: any;
+  selectedType: RequestType | null;
+  selectedCategory: Category | null;
   ticketDetails: TicketDetails;
-  requestData: any;
-  setRequestData: any;
-  setSelectedType: any
-  setSelectedCategory: any;
+  requestData: RequestType[];
+  setRequestData: (data: RequestType[]) => void;
+  setSelectedType: (type: RequestType) => void;
+  setSelectedCategory: (category: Category) => void;
   setTicketDetails: (details: TicketDetails) => void;
   calculatePriority: (urgency: string, impact: string) => { level: string };
 }
@@ -101,17 +107,17 @@ export const TicketProvider: React.FC<TicketProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
-  const [selectedType, setSelectedType] = useState<number | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [requestData, setRequestData] = useState<RequestType[]>([]);
+  const [selectedType, setSelectedType] = useState<RequestType | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
   const [ticketDetails, setTicketDetails] = useState<TicketDetails>({
     title: "",
     description: "",
-    priority:"",
-    priority_no:""
+    priority: "",
+    priority_no: "",
   });
-  
-
-  const [requestData, setRequestData] = useState([]);
 
   // Load token + user from localStorage on mount (client-side only)
   useEffect(() => {
