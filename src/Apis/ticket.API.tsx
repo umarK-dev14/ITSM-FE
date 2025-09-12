@@ -123,6 +123,7 @@ export const useTicketAPI = () => {
 
     const createTicket = useCallback(
         async (priority: string) => {
+            console.log('Triggered createTicket with:', )
             if (!selectedType || !selectedCategory) {
                 Swal.fire(
                     "Validation Error",
@@ -136,12 +137,12 @@ export const useTicketAPI = () => {
                 title: ticketDetails.title,
                 description: ticketDetails.description,
                 requestor_id: user?.ID,
-                type_id: selectedType,
-                category_id: selectedCategory,
+                type_id: selectedType?.ID,
+                category_id: selectedCategory?.ID,
                 priority,
             };
 
-            return await apiCall(`/api/tickets`, "POST", payload);
+            return await apiCall(`/api/createticket`, "POST", payload);
         },
         [apiCall, selectedType, selectedCategory, ticketDetails, user]
     );
@@ -154,22 +155,22 @@ export const useTicketAPI = () => {
     );
 
     // 🔹 Auto-load request types once token is ready (only when token changes)
-    useEffect(() => {
-        if (authToken) {
-            fetchRequestTypes();
-            const fetchSample = async () => {
-                try {
-                    const sampleResponse = await getAssigneeAndSLA("P3");
-                    console.log("Sample SLA/Assignee response:", sampleResponse);
-                } catch (err) {
-                    console.error("Error fetching SLA/Assignee:", err);
-                }
-            };
+    // useEffect(() => {
+    //     if (authToken) {
+    //         fetchRequestTypes();
+    //         const fetchSample = async () => {
+    //             try {
+    //                 const sampleResponse = await getAssigneeAndSLA("P3");
+    //                 console.log("Sample SLA/Assignee response:", sampleResponse);
+    //             } catch (err) {
+    //                 console.error("Error fetching SLA/Assignee:", err);
+    //             }
+    //         };
 
-            fetchSample();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [authToken]);
+    //         fetchSample();
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [authToken]);
 
     return {
         loginUser,

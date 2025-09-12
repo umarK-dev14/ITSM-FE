@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Box,
   Button,
@@ -39,6 +38,7 @@ import {
   Close,
 } from "@mui/icons-material";
 import { useTicketAPI } from "../Apis/ticket.API";
+import { useEffect, useMemo, useState } from "react";
 
 // ✅ Ticket type from API
 type Ticket = {
@@ -213,48 +213,49 @@ const renderStatusChip = (status: string) => {
 };
 
 const MyTicketsParent: React.FC = () => {
-  const [tickets, setTickets] = React.useState<Ticket[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [tab, setTab] = React.useState(0);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [priorityFilter, setPriorityFilter] = React.useState<string>("all");
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState<string>("all");
 
   //Fetch tickets from API
-  React.useEffect(() => {
-    const fetchTickets = async () => {
+  const { fetchTickets } = useTicketAPI();
+  
+  useEffect(() => {
+    const fetchTicketsQuery = async () => {
       try {
-        const res = await fetch("http://your-api-url/tickets");
-        const json = await res.json();
-        setTickets(json.data);
+        const res = await fetchTickets();
+        console.log("Tickets:", res.data);
+        setTickets(res.data || []);
       } catch (err) {
         console.error("Error fetching tickets", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchTickets();
+    fetchTicketsQuery();
   }, []);
 
   //Counts
   const totalCount = tickets.length;
   const activeCount = tickets.filter((t) => t.STATUS.toLowerCase() !== "resolved").length;
   const resolvedCount = tickets.filter((t) => t.STATUS.toLowerCase() === "resolved").length;
-  const {fetchTickets} = useTicketAPI();
-  React.useEffect(() => {
-  const loadTickets = async () => {
-    try {
-      const response = await fetchTickets();
-      console.log("Tickets:", response);
-    } catch (err) {
-      console.error("Error fetching tickets", err);
-    }
-  };
+//   useEffect(() => {
+//   const loadTickets = async () => {
+//     try {
+//       const response = await fetchTickets();
+//       console.log("Tickets:", response);
+//     } catch (err) {
+//       console.error("Error fetching tickets", err);
+//     }
+//   };
 
-  loadTickets();
-}, [fetchTickets]);
+//   loadTickets();
+// }, [fetchTickets]);
   // setTickets(responseData)
   //Filtered tickets
-  const filteredTickets = React.useMemo(() => {
+  const filteredTickets = useMemo(() => {
     const byTab = tickets.filter((t) =>
       tab === 0 ? t.STATUS.toLowerCase() !== "resolved" : t.STATUS.toLowerCase() === "resolved"
     );

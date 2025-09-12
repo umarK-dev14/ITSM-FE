@@ -39,13 +39,13 @@ interface TicketContextType {
   logout: () => void;
 
   // 🔹 Ticket state
-  selectedType: number | null;
-  selectedCategory: number | null;
+  selectedType: any;
+  selectedCategory: any;
   ticketDetails: TicketDetails;
   requestData: any;
   setRequestData: any;
-  setSelectedType: (typeId: number | null) => void;
-  setSelectedCategory: (categoryId: number | null) => void;
+  setSelectedType: any
+  setSelectedCategory: any;
   setTicketDetails: (details: TicketDetails) => void;
   calculatePriority: (urgency: string, impact: string) => { level: string };
 }
