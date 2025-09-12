@@ -13,6 +13,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useTicket } from "../../context/ticket-context";
 import { useTicketAPI } from "../../Apis/ticket.API";
+import Swal from "sweetalert2";
 
 const theme = createTheme({
   palette: {
@@ -42,18 +43,30 @@ const CreateTickets: React.FC = () => {
    
   const initiateTicketCreation = async () => {
    
-    await createTicket(ticketDetails?.priority_no);
+    return await createTicket(ticketDetails?.priority_no);
   }
-  const handleNext = () => {
-    if (currentStep < totalSteps - 2) {
-      navigate(steps[currentStep + 1]);
+  const handleNext = async () => {
+  if (currentStep < totalSteps - 2) {
+    navigate(steps[currentStep + 1]);
+  } 
+  else if (currentStep <= totalSteps - 1) {
+    console.log("Submit Ticket");
+
+    try {
+      const res:any = await initiateTicketCreation();
+      console.log("Ticket creation response:", res);
+      if (res.message == "Ticket created successfully") {
+        navigate(steps[currentStep + 1]);
+      } else {
+        Swal.fire("Error", "Ticket creation failed", "error");
+      }
+    } catch (error) {
+      console.error("Ticket creation error:", error);
+      Swal.fire("Error", "Something went wrong while creating the ticket", "error");
     }
-    else if(currentStep <= totalSteps-1){
-      console.log("Submit Ticket");
-      initiateTicketCreation();
-      navigate(steps[currentStep + 1]);
-    }
-  };
+  }
+};
+
 
   const handleBack = () => {
     if (currentStep > 0) {

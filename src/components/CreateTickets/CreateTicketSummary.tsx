@@ -17,17 +17,17 @@ import { useEffect, useState } from "react";
 
 
 export default function CreateTicketSummary() {
-  const {selectedType, selectedCategory, ticketDetails} = useTicket();
-  const {getAssigneeAndSLA} = useTicketAPI();
-  const [assigneeDetails,setAssigneeDetails] = useState({} as any);
+  const { selectedType, selectedCategory, ticketDetails } = useTicket();
+  const { getAssigneeAndSLA } = useTicketAPI();
+  const [assigneeDetails, setAssigneeDetails] = useState({} as any);
   const fetchAssigneeDetails = async () => {
-         let res = await getAssigneeAndSLA(ticketDetails.priority_no);
-         setAssigneeDetails(res);
-      console.log("Assignee Details:", assigneeDetails,assigneeDetails?.assignee?.username,assigneeDetails?.assignee?.role);
+    let res = await getAssigneeAndSLA(ticketDetails.priority_no);
+    setAssigneeDetails(res);
+    console.log("Assignee Details:", assigneeDetails, assigneeDetails?.assignee?.username, assigneeDetails?.assignee?.role);
   }
-  useEffect(()=>{
-      fetchAssigneeDetails();
-  },[getAssigneeAndSLA])
+  useEffect(() => {
+    fetchAssigneeDetails();
+  }, [getAssigneeAndSLA])
   return (
     <Box sx={{ maxWidth: "100%", margin: "2rem auto" }}>
       <Card sx={{ borderRadius: 3, boxShadow: 1 }}>
@@ -118,14 +118,14 @@ export default function CreateTicketSummary() {
                   General Support Team
                 </Typography>
               </Box>
-              
+
               <Box display="flex" alignItems="center">
-              <AccessTimeIcon fontSize="small" /> 
-              <Typography
-                variant="body2"
-                sx={{ fontSize: 14, color: "text.primary" }}>
-                    {assigneeDetails?.sla?.responseTimeMins} Mins
-              </Typography>
+                <AccessTimeIcon fontSize="small" />
+                <Typography
+                  variant="body2"
+                  sx={{ fontSize: 14, color: "text.primary" }}>
+                  {assigneeDetails?.sla?.responseTimeMins} Mins
+                </Typography>
               </Box>
             </Box>
 
@@ -134,7 +134,7 @@ export default function CreateTicketSummary() {
               color="text.secondary"
               sx={{ mb: 2, ml: 3 }}
               fontSize={11}>
-                {assigneeDetails?.assignee?.username ?? "Standard initial response time"} : {assigneeDetails?.assignee?.role ?? ""}
+              {assigneeDetails?.assignee?.username ?? "Standard initial response time"} : {assigneeDetails?.assignee?.role ?? ""}
             </Typography>
 
             <Box
@@ -145,10 +145,12 @@ export default function CreateTicketSummary() {
               mb={2}>
               <Box display="flex" flexDirection="column">
                 <Box display="flex" alignItems="center" gap={1}>
-                  <AccessTimeIcon fontSize="small" sx={{color: "#0f8ee8ff"}} />
+                  <AccessTimeIcon fontSize="small" sx={{ color: "#0f8ee8ff" }} />
                   <Typography variant="body2" sx={{ fontSize: 13 }}>
-                    <strong>SLA Target:</strong>
-                    <Typography sx={{ fontSize: 12 }}>{assigneeDetails?.sla?.resolutionTimeMins} Mins</Typography>
+                    <strong>SLA Target:</strong>{" "}
+                    <Typography component="span" sx={{ fontSize: 12 }}>
+                      {assigneeDetails?.sla?.resolutionTimeMins} Mins
+                    </Typography>
                   </Typography>
                 </Box>
                 <Typography
@@ -163,11 +165,11 @@ export default function CreateTicketSummary() {
                 <Box display="flex" alignItems="center" gap={1}>
                   <PeopleOutlineIcon fontSize="small" color="success" />
                   <Typography variant="body2" sx={{ fontSize: 13 }}>
-                    <strong>Assignment Type:</strong> 
+                    <strong>Assignment Type:</strong>
                     <Typography sx={{ fontSize: 12 }}>Direct Assignment</Typography>
                   </Typography>
                 </Box>
-                
+
                 <Typography
                   variant="caption"
                   color="text.secondary"
@@ -184,12 +186,12 @@ export default function CreateTicketSummary() {
                 borderRadius: 2,
               }}>
               <Box display="flex" alignItems="center" gap={1} mb={1}>
-                <ErrorOutlineIcon fontSize="small" sx={{color:"#0f8ee8ff"}}/>
-                <Typography color="primary" fontWeight="500" sx={{color:"#0f8ee8ff", fontSize:13}}>
+                <ErrorOutlineIcon fontSize="small" sx={{ color: "#0f8ee8ff" }} />
+                <Typography color="primary" fontWeight="500" sx={{ color: "#0f8ee8ff", fontSize: 13 }}>
                   Assignment Information
                 </Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" sx={{fontSize:12}}>
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: 12 }}>
                 This ticket will be directly assigned to {assigneeDetails?.assignee?.username} ( {assigneeDetails?.assignee?.role} ) for immediate attention.
               </Typography>
             </Box>

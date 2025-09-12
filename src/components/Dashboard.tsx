@@ -28,9 +28,6 @@ import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useState } from "react";
 
 
-
-
-
 type PriorityLevel = "High" | "Medium" | "Medium-Low" | "Critical";
 type StatusType = "Open" | "Closed" | "Pending";
 
@@ -138,42 +135,43 @@ export default function Dashboard() {
   }
   useEffect(() => {
     initiateFetchTickets();
-  }, [fetchTickets])
+  }, [])
 
-  function formatDate(timestamp: Date) {
-    return new Date(timestamp).toISOString().split("T")[0];
-  }
-  const filteredTickets = tickets?.filter((ticket: any) => ticket.STATUS === "open")
+  function formatDate(timestamp:Date) {
+  return new Date(timestamp).toISOString().split("T")[0];
+}
+  const filteredTickets = tickets?.filter((ticket: any) => ticket.STATUS === "Open");
+
   const serviceItems = [
-    {
-      label: "MY OPEN TICKETS",
-      value: filteredTickets?.length,
-      subtext: "Active Requests",
-      icon: <ConfirmationNumberIcon sx={{ color: "#fff", fontSize: 26 }} />,
-      bg: "linear-gradient(135deg, #3b82f6, #22c55e)",
-    },
-    {
-      label: "AVG RESPONSE TIME",
-      value: "—",
-      subtext: "Support Response",
-      icon: <AccessTimeIcon sx={{ color: "#fff", fontSize: 26 }} />,
-      bg: "linear-gradient(135deg, #34d399, #10b981)",
-    },
-    {
-      label: "RESOLUTION RATE",
-      value: "—",
-      subtext: "First Contact Resolution",
-      icon: <CheckCircleIcon sx={{ color: "#fff", fontSize: 26 }} />,
-      bg: "linear-gradient(135deg, #6366f1, #818cf8)",
-    },
-    {
-      label: "SERVICE RATING",
-      value: "—",
-      subtext: "Your Experience",
-      icon: <StarIcon sx={{ color: "#fff", fontSize: 26 }} />,
-      bg: "linear-gradient(135deg, #3b82f6, #60a5fa)",
-    },
-  ];
+  {
+    label: "MY OPEN TICKETS",
+    value: filteredTickets?.length || 0,
+    subtext: "Active Requests",
+    icon: <ConfirmationNumberIcon sx={{ color: "#fff", fontSize: 26 }} />,
+    bg: "linear-gradient(135deg, #3b82f6, #22c55e)",
+  },
+  {
+    label: "AVG RESPONSE TIME",
+    value: "—",
+    subtext: "Support Response",
+    icon: <AccessTimeIcon sx={{ color: "#fff", fontSize: 26 }} />,
+    bg: "linear-gradient(135deg, #34d399, #10b981)",
+  },
+  {
+    label: "RESOLUTION RATE",
+    value: "—",
+    subtext: "First Contact Resolution",
+    icon: <CheckCircleIcon sx={{ color: "#fff", fontSize: 26 }} />,
+    bg: "linear-gradient(135deg, #6366f1, #818cf8)",
+  },
+  {
+    label: "SERVICE RATING",
+    value: "—",
+    subtext: "Your Experience",
+    icon: <StarIcon sx={{ color: "#fff", fontSize: 26 }} />,
+    bg: "linear-gradient(135deg, #3b82f6, #60a5fa)",
+  },
+];
   return (
     <Box sx={{ marginRight: 6 }}>
       <Typography

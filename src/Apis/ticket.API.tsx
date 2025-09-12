@@ -117,13 +117,13 @@ export const useTicketAPI = () => {
         return data;
     }, [apiCall, setRequestData]);
 
-    const fetchTickets = useCallback(async () => {
+    const fetchTickets = async () => {
         return await apiCall(`/api/tickets/getTickets`, "GET");
-    }, [apiCall]);
+    };
 
     const createTicket = useCallback(
         async (priority: string) => {
-            console.log('Triggered createTicket with:', )
+            console.log('Triggered createTicket with:',)
             if (!selectedType || !selectedCategory) {
                 Swal.fire(
                     "Validation Error",
