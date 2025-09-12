@@ -73,43 +73,6 @@ interface Ticket {
 }
 
 
-//   {
-//     id: "TKT-002",
-//     title: "VPN Connection Drops Frequently",
-//     description: "My VPN connection drops every 15-20 minutes when working from home.",
-//     category: "Incident",
-//     priority: "High",
-//     status: "Open",
-//     updated: "16/1/2024",
-//   },
-//   {
-//     id: "TKT-005",
-//     title: "Software Installation Request - Adobe Creative Suite",
-//     description: "Need Adobe Creative Suite installed on my workstation for design work.",
-//     category: "Service Request",
-//     priority: "Medium",
-//     status: "Open",
-//     updated: "16/1/2024",
-//   },
-//   {
-//     id: "TKT-011",
-//     title: "New User Account Creation",
-//     description: "Please create a new user account for Emma Johnson who starts Monday.",
-//     category: "Service Request",
-//     priority: "High",
-//     status: "Open",
-//     updated: "17/1/2024",
-//   },
-//   {
-//     id: "TKT-015",
-//     title: "Security Software Update Causing System Crashes",
-//     description: "After the latest security update, my computer crashes randomly throughout the day.",
-//     category: "Incident",
-//     priority: "Critical",
-//     status: "Open",
-//     updated: "17/1/2024",
-//   },
-// ];
 
 
 const renderPriorityChip = (priority: PriorityLevel) => {
