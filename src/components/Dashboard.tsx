@@ -72,7 +72,7 @@ interface Ticket {
   updated: string;
 }
 
-// const tickets: Ticket[] = [
+
 //   {
 //     id: "TKT-002",
 //     title: "VPN Connection Drops Frequently",
