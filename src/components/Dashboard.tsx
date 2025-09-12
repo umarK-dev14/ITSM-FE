@@ -24,6 +24,8 @@ import StarIcon from "@mui/icons-material/Star";
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { useTicketAPI } from "../Apis/ticket.API";
+import { useEffect, useState } from "react";
 
 
 const serviceItems = [
@@ -70,44 +72,45 @@ interface Ticket {
   updated: string;
 }
 
-const tickets: Ticket[] = [
-  {
-    id: "TKT-002",
-    title: "VPN Connection Drops Frequently",
-    description: "My VPN connection drops every 15-20 minutes when working from home.",
-    category: "Incident",
-    priority: "High",
-    status: "Open",
-    updated: "16/1/2024",
-  },
-  {
-    id: "TKT-005",
-    title: "Software Installation Request - Adobe Creative Suite",
-    description: "Need Adobe Creative Suite installed on my workstation for design work.",
-    category: "Service Request",
-    priority: "Medium",
-    status: "Open",
-    updated: "16/1/2024",
-  },
-  {
-    id: "TKT-011",
-    title: "New User Account Creation",
-    description: "Please create a new user account for Emma Johnson who starts Monday.",
-    category: "Service Request",
-    priority: "High",
-    status: "Open",
-    updated: "17/1/2024",
-  },
-  {
-    id: "TKT-015",
-    title: "Security Software Update Causing System Crashes",
-    description: "After the latest security update, my computer crashes randomly throughout the day.",
-    category: "Incident",
-    priority: "Critical",
-    status: "Open",
-    updated: "17/1/2024",
-  },
-];
+// const tickets: Ticket[] = [
+//   {
+//     id: "TKT-002",
+//     title: "VPN Connection Drops Frequently",
+//     description: "My VPN connection drops every 15-20 minutes when working from home.",
+//     category: "Incident",
+//     priority: "High",
+//     status: "Open",
+//     updated: "16/1/2024",
+//   },
+//   {
+//     id: "TKT-005",
+//     title: "Software Installation Request - Adobe Creative Suite",
+//     description: "Need Adobe Creative Suite installed on my workstation for design work.",
+//     category: "Service Request",
+//     priority: "Medium",
+//     status: "Open",
+//     updated: "16/1/2024",
+//   },
+//   {
+//     id: "TKT-011",
+//     title: "New User Account Creation",
+//     description: "Please create a new user account for Emma Johnson who starts Monday.",
+//     category: "Service Request",
+//     priority: "High",
+//     status: "Open",
+//     updated: "17/1/2024",
+//   },
+//   {
+//     id: "TKT-015",
+//     title: "Security Software Update Causing System Crashes",
+//     description: "After the latest security update, my computer crashes randomly throughout the day.",
+//     category: "Incident",
+//     priority: "Critical",
+//     status: "Open",
+//     updated: "17/1/2024",
+//   },
+// ];
+
 
 const renderPriorityChip = (priority: PriorityLevel) => {
   const colorMap: Record<PriorityLevel, string> = {
@@ -184,6 +187,25 @@ const articles: HelpArticle[] = [
 ]
 
 export default function Dashboard() {
+  const { fetchTickets } = useTicketAPI();
+  const [tickets, setTickets] = useState([] as any);
+
+  const initiateFetchTickets = async () => {
+    try {
+      const res = await fetchTickets();
+      setTickets(res?.data || []);
+      console.log("Fetched Tickets:", res);
+    } catch (error) {
+      console.log("Error on fetch Tickets", error)
+    }
+  }
+  useEffect(() => {
+    initiateFetchTickets();
+  }, [fetchTickets])
+
+  function formatDate(timestamp:Date) {
+  return new Date(timestamp).toISOString().split("T")[0];
+}
   return (
     <Box sx={{ marginRight: 6 }}>
       <Typography
@@ -376,7 +398,7 @@ export default function Dashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tickets.map((ticket) => (
+            {tickets?.map((ticket:any) => (
               <TableRow key={ticket.id}
                 sx={{
                   transition: "background 0.3s",
@@ -386,15 +408,15 @@ export default function Dashboard() {
                     cursor: "pointer"
                   }
                 }}>
-                <TableCell sx={{ color: "#2563eb", fontWeight: 500 }}>{ticket.id}</TableCell>
+                <TableCell sx={{ color: "#2563eb", fontWeight: 500 }}>{ticket.TICKET_NO}</TableCell>
                 <TableCell>
-                  <div style={{ fontWeight: 500 }}>{ticket.title}</div>
-                  <div style={{ color: "#6b7280", fontSize: 13 }}>{ticket.description}</div>
+                  <div style={{ fontWeight: 500 }}>{ticket.TITLE}</div>
+                  <div style={{ color: "#6b7280", fontSize: 13 }}>{ticket.DESCRIPTION}</div>
                 </TableCell>
-                <TableCell>{ticket.category}</TableCell>
-                <TableCell>{renderPriorityChip(ticket.priority)}</TableCell>
-                <TableCell>{renderStatusChip(ticket.status)}</TableCell>
-                <TableCell>{ticket.updated}</TableCell>
+                <TableCell>{ticket.CATEGORY}</TableCell>
+                <TableCell>{renderPriorityChip(ticket.PRIORITY)}</TableCell>
+                <TableCell>{renderStatusChip(ticket.STATUS)}</TableCell>
+                <TableCell>{formatDate(ticket.UPDATED_AT)}</TableCell>
                 <TableCell align="center">
                   <IconButton
                     size="small"
