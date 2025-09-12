@@ -6,7 +6,7 @@ import { useTicket } from "../../context/ticket-context";
 
 const CategoryStep: React.FC = () => {
     const {selectedType, selectedCategory, setSelectedCategory,requestData} = useTicket()
-     const selectedStep = requestData.find((item:any) => item.ID === selectedType);
+     const selectedStep = requestData.find((item:any) => item.ID === selectedType?.ID);
       const categories = selectedStep?.Categories || [];
   return (
     <Box sx={{ p: 4 }}>
@@ -31,8 +31,8 @@ const CategoryStep: React.FC = () => {
           <Grid key={cat.ID} size={{ xs: 12, sm: 6 }}>
             <StepCards
               title={cat.NAME}
-              isSelected={selectedCategory === cat.ID}
-              onClick={() => setSelectedCategory(cat.ID)}
+              isSelected={selectedCategory?.ID === cat?.ID}
+              onClick={() => setSelectedCategory(cat)}
             />
           </Grid>
         ))}

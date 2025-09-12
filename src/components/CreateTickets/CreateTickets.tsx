@@ -12,6 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useTicket } from "../../context/ticket-context";
+import { useTicketAPI } from "../../Apis/ticket.API";
 
 const theme = createTheme({
   palette: {
@@ -27,7 +28,7 @@ const theme = createTheme({
   },
 });
 
-const steps = ["/create-ticket/requesttype", "/create-ticket/category", "/create-ticket/ticketdetails"];
+const steps = ["/create-ticket/requesttype", "/create-ticket/category", "/create-ticket/ticketdetails","/create-ticket/summary","/tickets"];
 const totalSteps = steps.length;
 const CreateTickets: React.FC = () => {
   const { selectedType, selectedCategory } = useTicket();
@@ -36,9 +37,20 @@ const CreateTickets: React.FC = () => {
   const navigate = useNavigate();
   const currentStep = steps.indexOf(location.pathname);
   const progress = ((currentStep + 1) / steps.length) * 100;
-
+  const {createTicket} = useTicketAPI();
+   const {ticketDetails} = useTicket();
+   
+  const initiateTicketCreation = async () => {
+   
+    await createTicket(ticketDetails?.priority_no);
+  }
   const handleNext = () => {
-    if (currentStep < totalSteps - 1) {
+    if (currentStep < totalSteps - 2) {
+      navigate(steps[currentStep + 1]);
+    }
+    else if(currentStep <= totalSteps-1){
+      console.log("Submit Ticket");
+      initiateTicketCreation();
       navigate(steps[currentStep + 1]);
     }
   };

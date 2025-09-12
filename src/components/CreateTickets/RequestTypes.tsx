@@ -34,8 +34,8 @@ const RequestTypes: React.FC = ({}) => {
               icon={item.icon}
               title={item.NAME}
               subtitle={item.DESCRIPTION}
-              isSelected={selectedType === item.ID}
-              onClick={() => setSelectedType(item.ID)}
+              isSelected={selectedType?.ID === item?.ID}
+              onClick={() => setSelectedType(item)}
             />
           </Grid>
         ))}

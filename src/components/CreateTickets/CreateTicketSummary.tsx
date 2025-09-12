@@ -11,9 +11,23 @@ import GroupIcon from "@mui/icons-material/Group";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import { useTicket } from "../../context/ticket-context";
+import { useTicketAPI } from "../../Apis/ticket.API";
+import { useEffect, useState } from "react";
 
 
 export default function CreateTicketSummary() {
+  const {selectedType, selectedCategory, ticketDetails} = useTicket();
+  const {getAssigneeAndSLA} = useTicketAPI();
+  const [assigneeDetails,setAssigneeDetails] = useState({} as any);
+  const fetchAssigneeDetails = async () => {
+         let res = await getAssigneeAndSLA(ticketDetails.priority_no);
+         setAssigneeDetails(res);
+      console.log("Assignee Details:", assigneeDetails,assigneeDetails?.assignee?.username,assigneeDetails?.assignee?.role);
+  }
+  useEffect(()=>{
+      fetchAssigneeDetails();
+  },[getAssigneeAndSLA])
   return (
     <Box sx={{ maxWidth: "100%", margin: "2rem auto" }}>
       <Card sx={{ borderRadius: 3, boxShadow: 1 }}>
@@ -35,8 +49,8 @@ export default function CreateTicketSummary() {
             }}
           >
             {[
-              { label: "Type:", value: "Incident" },
-              { label: "Category:", value: "Network" },
+              { label: "Type:", value: selectedType ? selectedType.NAME : "" },
+              { label: "Category:", value: selectedCategory ? selectedCategory.NAME : "" },
               {
                 label: "Priority:",
                 value: (
@@ -52,12 +66,12 @@ export default function CreateTicketSummary() {
                       borderRadius: 1,
                     }}
                   >
-                    P3 (Medium)
+                    {ticketDetails.priority}
                   </Box>
                 ),
               },
-              { label: "Title:", value: "hjdsb" },
-              { label: "Description:", value: "n sc" },
+              { label: "Title:", value: ticketDetails.title ?? '' },
+              { label: "Description:", value: ticketDetails.description ?? '' },
             ].map((item, index) => (
               <Box key={index} display="flex" alignItems="flex-start" mb={1.5}>
                 <Typography
@@ -110,7 +124,7 @@ export default function CreateTicketSummary() {
               <Typography
                 variant="body2"
                 sx={{ fontSize: 14, color: "text.primary" }}>
-                    4 hours
+                    {assigneeDetails?.sla?.responseTimeMins} Mins
               </Typography>
               </Box>
             </Box>
@@ -120,7 +134,7 @@ export default function CreateTicketSummary() {
               color="text.secondary"
               sx={{ mb: 2, ml: 3 }}
               fontSize={11}>
-              Michael Chen • IT Support Specialist
+                {assigneeDetails?.assignee?.username ?? "Standard initial response time"} : {assigneeDetails?.assignee?.role ?? ""}
             </Typography>
 
             <Box
@@ -134,7 +148,7 @@ export default function CreateTicketSummary() {
                   <AccessTimeIcon fontSize="small" sx={{color: "#0f8ee8ff"}} />
                   <Typography variant="body2" sx={{ fontSize: 13 }}>
                     <strong>SLA Target:</strong>
-                    <Typography sx={{ fontSize: 12 }}>4 hours</Typography>
+                    <Typography sx={{ fontSize: 12 }}>{assigneeDetails?.sla?.resolutionTimeMins} Mins</Typography>
                   </Typography>
                 </Box>
                 <Typography
@@ -176,8 +190,7 @@ export default function CreateTicketSummary() {
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" sx={{fontSize:12}}>
-                This ticket will be directly assigned to Michael Chen (IT Support
-                Specialist) for immediate attention.
+                This ticket will be directly assigned to {assigneeDetails?.assignee?.username} ( {assigneeDetails?.assignee?.role} ) for immediate attention.
               </Typography>
             </Box>
           </Paper>
