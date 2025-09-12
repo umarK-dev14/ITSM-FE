@@ -28,38 +28,10 @@ import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useState } from "react";
 
 
-const serviceItems = [
-  {
-    label: "MY OPEN TICKETS",
-    value: "4",
-    subtext: "Active Requests",
-    icon: <ConfirmationNumberIcon sx={{ color: "#fff", fontSize: 26 }} />,
-    bg: "linear-gradient(135deg, #3b82f6, #22c55e)",
-  },
-  {
-    label: "AVG RESPONSE TIME",
-    value: "—",
-    subtext: "Support Response",
-    icon: <AccessTimeIcon sx={{ color: "#fff", fontSize: 26 }} />,
-    bg: "linear-gradient(135deg, #34d399, #10b981)",
-  },
-  {
-    label: "RESOLUTION RATE",
-    value: "Undefined%",
-    subtext: "First Contact Resolution",
-    icon: <CheckCircleIcon sx={{ color: "#fff", fontSize: 26 }} />,
-    bg: "linear-gradient(135deg, #6366f1, #818cf8)",
-  },
-  {
-    label: "SERVICE RATING",
-    value: "Undefined/5",
-    subtext: "Your Experience",
-    icon: <StarIcon sx={{ color: "#fff", fontSize: 26 }} />,
-    bg: "linear-gradient(135deg, #3b82f6, #60a5fa)",
-  },
-];
 
-type PriorityLevel = "High" | "Medium" | "Critical";
+
+
+type PriorityLevel = "High" | "Medium" | "Medium-Low" | "Critical";
 type StatusType = "Open" | "Closed" | "Pending";
 
 interface Ticket {
@@ -72,15 +44,14 @@ interface Ticket {
   updated: string;
 }
 
-
-
-
 const renderPriorityChip = (priority: PriorityLevel) => {
   const colorMap: Record<PriorityLevel, string> = {
     High: "#16a34a",
     Medium: "#d97706",
+    "Medium-Low": "#ffc908ff",
     Critical: "#dc2626",
-  }
+  };
+
   return (
     <Chip
       label={priority}
@@ -90,20 +61,21 @@ const renderPriorityChip = (priority: PriorityLevel) => {
         borderColor: colorMap[priority],
         color: colorMap[priority],
         fontWeight: 500,
-        fontSize: 12,
-        px: 0.5,
+        fontSize: 11,
+        px: 0,
         height: 20,
-        borderRadius: 1
+        borderRadius: 1,
       }}
     />
-  )
-}
+  );
+};
+
 const renderStatusChip = (status: StatusType) => {
   return <Chip label={status} color="primary" variant="outlined" size="small"
     sx={{
       fontWeight: 500,
-      fontSize: 12,
-      px: 0.5,
+      fontSize: 11,
+      px: 0,
       height: 20,
       borderRadius: 1
     }}
@@ -153,6 +125,8 @@ export default function Dashboard() {
   const { fetchTickets } = useTicketAPI();
   const [tickets, setTickets] = useState([] as any);
 
+
+
   const initiateFetchTickets = async () => {
     try {
       const res = await fetchTickets();
@@ -166,9 +140,40 @@ export default function Dashboard() {
     initiateFetchTickets();
   }, [fetchTickets])
 
-  function formatDate(timestamp:Date) {
-  return new Date(timestamp).toISOString().split("T")[0];
-}
+  function formatDate(timestamp: Date) {
+    return new Date(timestamp).toISOString().split("T")[0];
+  }
+  const filteredTickets = tickets?.filter((ticket: any) => ticket.STATUS === "open")
+  const serviceItems = [
+    {
+      label: "MY OPEN TICKETS",
+      value: filteredTickets?.length,
+      subtext: "Active Requests",
+      icon: <ConfirmationNumberIcon sx={{ color: "#fff", fontSize: 26 }} />,
+      bg: "linear-gradient(135deg, #3b82f6, #22c55e)",
+    },
+    {
+      label: "AVG RESPONSE TIME",
+      value: "—",
+      subtext: "Support Response",
+      icon: <AccessTimeIcon sx={{ color: "#fff", fontSize: 26 }} />,
+      bg: "linear-gradient(135deg, #34d399, #10b981)",
+    },
+    {
+      label: "RESOLUTION RATE",
+      value: "—",
+      subtext: "First Contact Resolution",
+      icon: <CheckCircleIcon sx={{ color: "#fff", fontSize: 26 }} />,
+      bg: "linear-gradient(135deg, #6366f1, #818cf8)",
+    },
+    {
+      label: "SERVICE RATING",
+      value: "—",
+      subtext: "Your Experience",
+      icon: <StarIcon sx={{ color: "#fff", fontSize: 26 }} />,
+      bg: "linear-gradient(135deg, #3b82f6, #60a5fa)",
+    },
+  ];
   return (
     <Box sx={{ marginRight: 6 }}>
       <Typography
@@ -313,7 +318,7 @@ export default function Dashboard() {
             mb: 2
           }}
         >
-          <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
+          <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, fontSize: 18 }}>
             Your Active Tickets
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
@@ -321,7 +326,7 @@ export default function Dashboard() {
               variant="contained"
               size="small"
               sx={{ textTransform: 'none', fontWeight: "500" }}>
-              4 Active
+              {tickets.length} Active
             </Button>
 
             <Button
@@ -334,7 +339,7 @@ export default function Dashboard() {
             </Button>
           </Box>
         </Box>
-        <Table>
+        <Table size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: "#f9fafb" }}>
               <TableCell>
@@ -361,7 +366,7 @@ export default function Dashboard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tickets?.map((ticket:any) => (
+            {tickets?.map((ticket: any) => (
               <TableRow key={ticket.id}
                 sx={{
                   transition: "background 0.3s",
@@ -371,15 +376,23 @@ export default function Dashboard() {
                     cursor: "pointer"
                   }
                 }}>
-                <TableCell sx={{ color: "#2563eb", fontWeight: 500 }}>{ticket.TICKET_NO}</TableCell>
+                <TableCell sx={{ color: "#2563eb", fontWeight: 500, fontSize: 12 }}>{ticket.TICKET_NO}</TableCell>
                 <TableCell>
-                  <div style={{ fontWeight: 500 }}>{ticket.TITLE}</div>
-                  <div style={{ color: "#6b7280", fontSize: 13 }}>{ticket.DESCRIPTION}</div>
+                  <Box>
+                    <Typography variant="body2" fontWeight="bold" fontSize={13}>
+                      {ticket.TITLE}
+                    </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: 12 }}>
+                        {ticket.DESCRIPTION.length > 20
+                          ? ticket.DESCRIPTION.substring(0, 20) + "..."
+                          : ticket.DESCRIPTION}
+                      </Typography>
+                  </Box>
                 </TableCell>
-                <TableCell>{ticket.CATEGORY}</TableCell>
+                <TableCell sx={{fontSize:13}}>{ticket.CATEGORY}</TableCell>
                 <TableCell>{renderPriorityChip(ticket.PRIORITY)}</TableCell>
                 <TableCell>{renderStatusChip(ticket.STATUS)}</TableCell>
-                <TableCell>{formatDate(ticket.UPDATED_AT)}</TableCell>
+                <TableCell sx={{fontSize:13}}>{formatDate(ticket.UPDATED_AT)}</TableCell>
                 <TableCell align="center">
                   <IconButton
                     size="small"
@@ -399,7 +412,7 @@ export default function Dashboard() {
       </TableContainer>
 
       <Box sx={{ mb: 2, pt: 3, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography variant="h6" fontWeight="bold">
+        <Typography variant="h6" fontWeight="bold" sx={{fontSize: 18}}>
           Popular Help Articles
         </Typography>
         <IconButton size="small" sx={{ border: "1px solid #ccc", borderRadius: 1, color: "black" }}>
@@ -413,7 +426,7 @@ export default function Dashboard() {
       <Box
         display="grid"
         gridTemplateColumns="repeat(4, 1fr)"
-        gap={2}
+        gap={1}
       >
         {articles.map((article, index) => (
           <Card
@@ -425,7 +438,7 @@ export default function Dashboard() {
               height: "100%",
               "&:hover": {
                 boxShadow: 6,
-                color: "#1482dcff"
+                color: "#1482dcea"
               }
             }}
           >
@@ -450,7 +463,7 @@ export default function Dashboard() {
                 </Typography>
                 <Box display="flex">
                   <StarIcon sx={{ color: "#22c55e", fontSize: 18 }} />
-                  <Typography variant="body2" fontWeight={500}>
+                  <Typography variant="body2" fontWeight={500} sx={{color: "#22c55e"}}>
                     {article.rating}
                   </Typography>
                 </Box>
