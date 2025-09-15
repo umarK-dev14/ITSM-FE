@@ -24,6 +24,7 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { Link, useLocation } from "react-router-dom";
 
 interface SideBarProps {
@@ -33,11 +34,13 @@ interface SideBarProps {
 
 const drawerWidth = 220;
 
-export default function SideBarParent({ isCollapsed, toggleSidebar }: SideBarProps) {
+export default function SideBarParent({
+  isCollapsed,
+  toggleSidebar,
+}: SideBarProps) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
-
 
   const getMenuButtonStyle = (isSignOut = false) => ({
     borderRadius: "10px",
@@ -54,43 +57,47 @@ export default function SideBarParent({ isCollapsed, toggleSidebar }: SideBarPro
     },
   });
 
-  const menuIconStyle = { color: "white", minWidth: 0, mr: isCollapsed ? 0 : 2, justifyContent: "center" };
+  const menuIconStyle = {
+    color: "white",
+    minWidth: 0,
+    mr: isCollapsed ? 0 : 2,
+    justifyContent: "center",
+  };
 
-const drawerContent = (
-  <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-    <Box
-      sx={{
-        p: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: isCollapsed ? "center" : "space-between",
-      }}
-    >
+  const drawerContent = (
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <Box
+        sx={{
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: isCollapsed ? "center" : "space-between",
+        }}
+      >
+        {!isCollapsed && (
+          <Box display="flex" alignItems="center" gap={1}>
+            <ConfirmationNumberIcon
+              sx={{
+                color: "white",
+                backgroundColor: "#3b82f6",
+                borderRadius: "6px",
+                padding: "4px",
+                fontSize: 20,
+              }}
+            />
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", color: "white", fontSize: 15 }}
+            >
+              ServiceDesk
+            </Typography>
+          </Box>
+        )}
 
-      {!isCollapsed && (
-        <Box display="flex" alignItems="center" gap={1}>
-          <ConfirmationNumberIcon
-            sx={{
-              color: "white",
-              backgroundColor: "#3b82f6",
-              borderRadius: "6px",
-              padding: "4px",
-              fontSize: 20, 
-            }}
-          />
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: "bold", color: "white", fontSize: 15 }}>
-            ServiceDesk
-          </Typography>
-        </Box>
-      )}
-
-      <IconButton onClick={toggleSidebar} sx={{ color: "white" }}>
-        {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-      </IconButton>
-    </Box>
-
+        <IconButton onClick={toggleSidebar} sx={{ color: "white" }}>
+          {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+        </IconButton>
+      </Box>
 
       <Divider sx={{ borderColor: "gray" }} />
 
@@ -98,11 +105,19 @@ const drawerContent = (
         <List>
           {[
             { text: "Dashboard", icon: <HomeFilledIcon />, to: "/dashboard" },
-            { text: "My Tickets", icon: <ConfirmationNumberIcon />, to: "/tickets" },
+            {
+              text: "My Tickets",
+              icon: <ConfirmationNumberIcon />,
+              to: "/tickets",
+            },
             { text: "Create Ticket", icon: <AddIcon />, to: "/create-ticket" },
             { text: "Self Service", icon: <SearchIcon />, to: "/self-service" },
             { text: "FAQ", icon: <HelpOutlineIcon />, to: "/faq" },
-            { text: "AI Assistant", icon: <MessageIcon />, to: "/assistant" },
+            {
+              text: "AI Assistant",
+              icon: <ChatBubbleOutlineIcon />,
+              to: "/assistant",
+            },
           ].map((item) => (
             <ListItem key={item.text} disablePadding>
               <ListItemButton
@@ -122,9 +137,16 @@ const drawerContent = (
       <Box sx={{ p: 1, mb: 1 }}>
         {!isCollapsed && (
           <Box display="flex" alignItems="center" gap={1} mb={1}>
-            <Avatar sx={{ bgcolor: "blue", width: 32, height: 32, fontSize: 12 }}>AJ</Avatar>
+            <Avatar
+              sx={{ bgcolor: "blue", width: 32, height: 32, fontSize: 12 }}
+            >
+              AJ
+            </Avatar>
             <Box>
-              <Typography variant="body1" sx={{ fontSize: 12, fontWeight: 100 }}>
+              <Typography
+                variant="body1"
+                sx={{ fontSize: 12, fontWeight: 100 }}
+              >
                 Alex Johnson
               </Typography>
               <Typography variant="body2" color="gray" sx={{ fontSize: 12 }}>
@@ -136,17 +158,21 @@ const drawerContent = (
 
         <List>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/profile" sx={getMenuButtonStyle(false)}>
-              <ListItemIcon sx={{...menuIconStyle, fontSize: 11}}>
-                <PermIdentityIcon sx={{fontSize: 16}} />
+            <ListItemButton
+              component={Link}
+              to="/profile"
+              sx={getMenuButtonStyle(false)}
+            >
+              <ListItemIcon sx={{ ...menuIconStyle, fontSize: 11 }}>
+                <PermIdentityIcon sx={{ fontSize: 16 }} />
               </ListItemIcon>
-              {!isCollapsed && <ListItemText primary="Profile"/>}
+              {!isCollapsed && <ListItemText primary="Profile" />}
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton sx={getMenuButtonStyle(true)}>
-              <ListItemIcon sx={{...menuIconStyle, fontSize: 11}}>
-                <ExitToAppIcon sx={{fontSize: 15}} />
+              <ListItemIcon sx={{ ...menuIconStyle, fontSize: 11 }}>
+                <ExitToAppIcon sx={{ fontSize: 15 }} />
               </ListItemIcon>
               {!isCollapsed && <ListItemText primary="Sign Out" />}
             </ListItemButton>
