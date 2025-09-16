@@ -37,6 +37,7 @@ import {
   Bolt,
   Close,
 } from "@mui/icons-material";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useMemo, useState } from "react";
 
@@ -59,10 +60,10 @@ type Ticket = {
 };
 
 // ✅ Gradient icon box (for summary cards)
-const GradientIconBox: React.FC<{ colors: [string, string]; icon: React.ReactNode }> = ({
-  colors,
-  icon,
-}) => {
+const GradientIconBox: React.FC<{
+  colors: [string, string];
+  icon: React.ReactNode;
+}> = ({ colors, icon }) => {
   return (
     <Box
       sx={{
@@ -221,7 +222,7 @@ const MyTicketsParent: React.FC = () => {
 
   //Fetch tickets from API
   const { fetchTickets } = useTicketAPI();
-  
+
   useEffect(() => {
     const fetchTicketsQuery = async () => {
       try {
@@ -239,49 +240,57 @@ const MyTicketsParent: React.FC = () => {
 
   //Counts
   const totalCount = tickets.length;
-  const activeCount = tickets.filter((t) => t.STATUS.toLowerCase() !== "resolved").length;
-  const resolvedCount = tickets.filter((t) => t.STATUS.toLowerCase() === "resolved").length;
-//   useEffect(() => {
-//   const loadTickets = async () => {
-//     try {
-//       const response = await fetchTickets();
-//       console.log("Tickets:", response);
-//     } catch (err) {
-//       console.error("Error fetching tickets", err);
-//     }
-//   };
+  const activeCount = tickets.filter(
+    (t) => t.STATUS.toLowerCase() !== "resolved"
+  ).length;
+  const resolvedCount = tickets.filter(
+    (t) => t.STATUS.toLowerCase() === "resolved"
+  ).length;
+  //   useEffect(() => {
+  //   const loadTickets = async () => {
+  //     try {
+  //       const response = await fetchTickets();
+  //       console.log("Tickets:", response);
+  //     } catch (err) {
+  //       console.error("Error fetching tickets", err);
+  //     }
+  //   };
 
-//   loadTickets();
-// }, [fetchTickets]);
+  //   loadTickets();
+  // }, [fetchTickets]);
   // setTickets(responseData)
   //Filtered tickets
   const filteredTickets = useMemo(() => {
     const byTab = tickets.filter((t) =>
-      tab === 0 ? t.STATUS.toLowerCase() !== "resolved" : t.STATUS.toLowerCase() === "resolved"
+      tab === 0
+        ? t.STATUS.toLowerCase() !== "resolved"
+        : t.STATUS.toLowerCase() === "resolved"
     );
 
     const byPriority =
       priorityFilter === "all"
         ? byTab
         : byTab.filter((t) =>
-          t.PRIORITY.toLowerCase().includes(priorityFilter.toLowerCase())
-        );
+            t.PRIORITY.toLowerCase().includes(priorityFilter.toLowerCase())
+          );
 
     if (!searchQuery.trim()) return byPriority;
 
     const q = searchQuery.toLowerCase();
     return byPriority.filter(
-      (t) => t.TITLE.toLowerCase().includes(q) || t.DESCRIPTION.toLowerCase().includes(q)
+      (t) =>
+        t.TITLE.toLowerCase().includes(q) ||
+        t.DESCRIPTION.toLowerCase().includes(q)
     );
   }, [tickets, tab, searchQuery, priorityFilter]);
 
-  if (loading) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
-        <Typography>Loading tickets...</Typography>
-      </Box>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+  //       <Typography>Loading tickets...</Typography>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Container maxWidth="xl" sx={{ py: 1 }}>
@@ -480,9 +489,16 @@ const MyTicketsParent: React.FC = () => {
           boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
         }}
       >
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1.5 }}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          alignItems="center"
+          sx={{ mb: 1.5 }}
+        >
           <Search sx={{ color: "#2563EB" }} />
-          <Typography sx={{ fontWeight: 700, fontSize: "1.1rem", color: "#0F172A" }}>
+          <Typography
+            sx={{ fontWeight: 700, fontSize: "1.1rem", color: "#0F172A" }}
+          >
             Search & Filter Tickets
           </Typography>
         </Stack>
@@ -533,10 +549,12 @@ const MyTicketsParent: React.FC = () => {
                     label="All Priorities"
                     startAdornment={
                       <InputAdornment position="start">
-                        <FilterAltOutlined sx={{
-                          fontSize: 25,
-                          color: "#6B7280",
-                        }} />
+                        <FilterAltOutlined
+                          sx={{
+                            fontSize: 25,
+                            color: "#6B7280",
+                          }}
+                        />
                       </InputAdornment>
                     }
                   />
@@ -566,7 +584,6 @@ const MyTicketsParent: React.FC = () => {
               </IconButton>
             )}
           </Stack>
-
         </Box>
       </Paper>
 
@@ -618,7 +635,7 @@ const MyTicketsParent: React.FC = () => {
                 borderRadius: 2,
                 fontSize: 13,
                 fontWeight: 700,
-                bgcolor: tab === 0 ? "rgba(255,255,255,0.25)" : "#22C55E",
+                bgcolor: tab === 0 ? "rgba(255,255,255,0.25)" : "#fff",
                 color: "#fff",
               }}
             >
@@ -638,7 +655,7 @@ const MyTicketsParent: React.FC = () => {
               cursor: "pointer",
               background:
                 tab === 1
-                  ? "linear-gradient(90deg, #10B981, #10B981)"
+                  ? "#43d36b"
                   : "transparent",
               color: tab === 1 ? "#fff" : "#0F172A",
               fontWeight: 600,
@@ -646,7 +663,7 @@ const MyTicketsParent: React.FC = () => {
               transition: "all 0.2s ease-in-out",
             }}
           >
-            <CheckCircle sx={{ fontSize: 18, mr: 1 }} />
+            <TaskAltIcon sx={{ fontSize: 18, mr: 1 }} />
             Resolved Tickets
             <Box
               sx={{
@@ -656,7 +673,7 @@ const MyTicketsParent: React.FC = () => {
                 borderRadius: 2,
                 fontSize: 13,
                 fontWeight: 700,
-                bgcolor: "#22C55E",
+                bgcolor: "#43d36b",
                 color: "#fff",
               }}
             >
@@ -666,7 +683,12 @@ const MyTicketsParent: React.FC = () => {
         </Box>
 
         {/* Right: Ticket count summary */}
-        <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: { xs: 2, md: 0 } }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          sx={{ mt: { xs: 2, md: 0 } }}
+        >
           <TrendingUp sx={{ fontSize: 16, color: "#64748B" }} />
           <Typography sx={{ color: "#94A3B8", fontSize: 12 }}>
             Showing {filteredTickets.length} of{" "}
@@ -686,7 +708,11 @@ const MyTicketsParent: React.FC = () => {
             bgcolor: "#FFFFFF",
           }}
         >
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Stack direction="row" spacing={1.25} alignItems="center">
               <Box
                 sx={{
@@ -698,7 +724,9 @@ const MyTicketsParent: React.FC = () => {
                   placeItems: "center",
                 }}
               >
-                <ConfirmationNumberOutlined sx={{ color: "#fff", fontSize: 14 }} />
+                <ConfirmationNumberOutlined
+                  sx={{ color: "#fff", fontSize: 14 }}
+                />
               </Box>
               <Typography variant="h6" sx={{ fontWeight: 700 }}>
                 {tab === 0 ? "Active Tickets" : "Resolved Tickets"}
@@ -707,7 +735,11 @@ const MyTicketsParent: React.FC = () => {
             <Button
               size="small"
               variant="contained"
-              sx={{ borderRadius: 2, textTransform: "none", bgcolor: "#2563EB" }}
+              sx={{
+                borderRadius: 2,
+                textTransform: "none",
+                bgcolor: "#2563EB",
+              }}
             >
               {filteredTickets.length} Items
             </Button>
@@ -717,12 +749,25 @@ const MyTicketsParent: React.FC = () => {
           <Table aria-label="tickets table">
             <TableHead>
               <TableRow sx={{ bgcolor: "#F8FAFC" }}>
-                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>Ticket Details</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>Type</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>Priority</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>Created</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 700, color: "#475569" }}>
+                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>
+                  Ticket Details
+                </TableCell>
+                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>
+                  Type
+                </TableCell>
+                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>
+                  Priority
+                </TableCell>
+                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>
+                  Status
+                </TableCell>
+                <TableCell sx={{ fontWeight: 700, color: "#475569" }}>
+                  Created
+                </TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontWeight: 700, color: "#475569" }}
+                >
                   Actions
                 </TableCell>
               </TableRow>
@@ -734,7 +779,10 @@ const MyTicketsParent: React.FC = () => {
                     <Typography sx={{ fontWeight: 600, fontSize: 13 }}>
                       {ticket.TITLE}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: "#64748B", fontSize: 12 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "#64748B", fontSize: 12 }}
+                    >
                       {ticket.DESCRIPTION}
                     </Typography>
                   </TableCell>
@@ -749,7 +797,10 @@ const MyTicketsParent: React.FC = () => {
                       sx={{
                         cursor: "pointer",
                         transition: "all 0.2s ease",
-                        "&:hover": { color: "#2563EB", transform: "scale(1.15)" },
+                        "&:hover": {
+                          color: "#2563EB",
+                          transform: "scale(1.15)",
+                        },
                       }}
                     >
                       <Visibility />

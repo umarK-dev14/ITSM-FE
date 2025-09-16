@@ -1,9 +1,9 @@
 import React from "react";
 import Layout from "./LayoutPage";
-import MyTicketsParent from "../components/MyTicketsParent";
+import SelfService from "../components/SelfServices/SelfService";
 import { motion } from "framer-motion";
 
-const MyTicketPage: React.FC = () => {
+const SelfServicePage: React.FC = () => {
   return (
     <Layout>
       <motion.div
@@ -12,10 +12,10 @@ const MyTicketPage: React.FC = () => {
         exit={{ opacity: 0, y: -30 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <MyTicketsParent />
+        <SelfService />
       </motion.div>
     </Layout>
   );
 };
 
-export default MyTicketPage;
+export default SelfServicePage;

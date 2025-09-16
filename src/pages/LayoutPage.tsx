@@ -5,7 +5,10 @@ import HeaderParent from "../components/HeaderParent";
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    return saved ? JSON.parse(saved) : true;
+  });
 
   const toggleSidebar = () => setIsCollapsed((prev) => !prev);
   const sidebarWidth = isCollapsed ? 0 : 0;
