@@ -8,48 +8,35 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Paper,
   Chip,
   IconButton,
   Button,
+  Container,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import StarIcon from "@mui/icons-material/Star";
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useState } from "react";
 
-
-
-
-
-type PriorityLevel = "High" | "Medium" | "Medium-Low" | "Critical";
+type PriorityLevel = "High" | "Medium" | "Medium-Low" | "Critical" | "Low";
 type StatusType = "Open" | "Closed" | "Pending";
-
-interface Ticket {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  priority: PriorityLevel;
-  status: StatusType;
-  updated: string;
-}
 
 const renderPriorityChip = (priority: PriorityLevel) => {
   const colorMap: Record<PriorityLevel, string> = {
-    High: "#16a34a",
+    High: "#e8360de1",
     Medium: "#d97706",
     "Medium-Low": "#ffc908ff",
-    Critical: "#dc2626",
+    Critical: "#f00a0aff",
+    Low: "#16a34a",
   };
 
   return (
@@ -71,15 +58,21 @@ const renderPriorityChip = (priority: PriorityLevel) => {
 };
 
 const renderStatusChip = (status: StatusType) => {
-  return <Chip label={status} color="primary" variant="outlined" size="small"
-    sx={{
-      fontWeight: 500,
-      fontSize: 11,
-      px: 0,
-      height: 20,
-      borderRadius: 1
-    }}
-  />;
+  return (
+    <Chip
+      label={status}
+      color="primary"
+      variant="outlined"
+      size="small"
+      sx={{
+        fontWeight: 500,
+        fontSize: 11,
+        px: 0,
+        height: 20,
+        borderRadius: 1,
+      }}
+    />
+  );
 };
 
 interface HelpArticle {
@@ -117,15 +110,13 @@ const articles: HelpArticle[] = [
     category: "Software",
     rating: 4.1,
     views: 98,
-    helpful: 12
-  }
-]
+    helpful: 12,
+  },
+];
 
 export default function Dashboard() {
   const { fetchTickets } = useTicketAPI();
   const [tickets, setTickets] = useState([] as any);
-
-
 
   const initiateFetchTickets = async () => {
     try {
@@ -133,17 +124,22 @@ export default function Dashboard() {
       setTickets(res?.data || []);
       console.log("Fetched Tickets:", res);
     } catch (error) {
-      console.log("Error on fetch Tickets", error)
+      console.log("Error on fetch Tickets", error);
     }
-  }
+  };
+
   useEffect(() => {
     initiateFetchTickets();
-  }, [fetchTickets])
+  }, [fetchTickets]);
 
   function formatDate(timestamp: Date) {
     return new Date(timestamp).toISOString().split("T")[0];
   }
-  const filteredTickets = tickets?.filter((ticket: any) => ticket.STATUS === "open")
+
+  const filteredTickets = tickets?.filter(
+    (ticket: any) => ticket.STATUS === "open"
+  );
+
   const serviceItems = [
     {
       label: "MY OPEN TICKETS",
@@ -174,8 +170,9 @@ export default function Dashboard() {
       bg: "linear-gradient(135deg, #3b82f6, #60a5fa)",
     },
   ];
+
   return (
-    <Box sx={{ marginRight: 6 }}>
+    <Container maxWidth={false} disableGutters>
       <Typography
         variant="h5"
         fontWeight="bold"
@@ -185,14 +182,20 @@ export default function Dashboard() {
           WebkitTextFillColor: "transparent",
           mb: 1,
           fontSize: 21,
-        }}>
+        }}
+      >
         Welcome Back, Alex!
       </Typography>
 
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 2, fontSize: 12 }}>
+      <Typography
+        variant="body1"
+        color="text.secondary"
+        sx={{ mb: 2, fontSize: 12 }}
+      >
         Manage Your IT Requests And Track Service Status
       </Typography>
 
+      {/* Search Bar */}
       <TextField
         placeholder="Search Tickets, Knowledge Base, Or Services..."
         variant="outlined"
@@ -216,9 +219,15 @@ export default function Dashboard() {
               <SearchIcon color="primary" />
             </InputAdornment>
           ),
-        }} />
+        }}
+      />
 
-      <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, fontSize: 18 }}>
+      {/* Service Overview Cards */}
+      <Typography
+        variant="h6"
+        fontWeight="bold"
+        sx={{ mb: 1, fontSize: 18 }}
+      >
         Service Overview
       </Typography>
 
@@ -228,7 +237,8 @@ export default function Dashboard() {
           gridTemplateColumns: {
             xs: "1fr",
             sm: "1fr 1fr",
-            md: "1fr 1fr 1fr 1fr",
+            md: "1fr 1fr",
+            lg: "repeat(4, 1fr)"
           },
           gap: 3,
           mb: 3,
@@ -240,7 +250,7 @@ export default function Dashboard() {
             key={i}
             sx={{
               width: "100%",
-              height: 120,
+              minHeight: 120,
               borderRadius: 3,
               boxShadow: 2,
               display: "flex",
@@ -249,16 +259,16 @@ export default function Dashboard() {
               cursor: "pointer",
               "&:hover": {
                 boxShadow: 6,
-                "& .iconWrapper": {
+                "& .iconWrapper" : {
                   transform: "scale(1.1)",
                   filter:
-                    "drop-shadow(0 2px 4px rgba(241, 240, 240, 0.2))",
+                  "drop-shadow(0 2px 4px rgba(241, 240, 240, 0.2))"
                 },
-                "& .iconWrapper svg": {
+                "& .iconWrapper svg" : {
                   filter: "none",
                   color: "none",
-                },
-              },
+                }
+              }
             }}
           >
             <CardContent
@@ -269,6 +279,7 @@ export default function Dashboard() {
                 width: "100%",
                 height: "100%",
                 py: 2,
+                px: 2,
               }}
             >
               <Box>
@@ -276,13 +287,14 @@ export default function Dashboard() {
                   variant="body2"
                   color="text.secondary"
                   fontWeight={500}
+                  fontSize={12}
                 >
                   {item.label}
                 </Typography>
-                <Typography variant="h6" sx={{ mt: 0.5 }}>
+                <Typography variant="h6" sx={{ mt: 0.5, fontWeight: 700, lineHeight: 1, color: "#0F172A", whiteSpace: "nowrap" }}>
                   {item.value}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{fontSize: 11, color: "#94A3B8", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
                   {item.subtext}
                 </Typography>
               </Box>
@@ -308,24 +320,29 @@ export default function Dashboard() {
         ))}
       </Box>
 
-
-      <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: 2, p: 2 }}>
+      {/* Active Tickets Table */}
+      <Paper sx={{ borderRadius: 3, boxShadow: 2, p: 2, "&:hover": {boxShadow: 6} }}>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 2
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
           }}
         >
-          <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, fontSize: 18 }}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            sx={{ mb: 1, fontSize: 18 }}
+          >
             Your Active Tickets
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             <Button
               variant="contained"
               size="small"
-              sx={{ textTransform: 'none', fontWeight: "500" }}>
+              sx={{ textTransform: "none", fontWeight: "500" }}
+            >
               {tickets.length} Active
             </Button>
 
@@ -333,12 +350,13 @@ export default function Dashboard() {
               variant="outlined"
               startIcon={<FilterAltIcon />}
               size="small"
-              sx={{ textTransform: 'none', fontWeight: 500, color: "black" }}
+              sx={{ textTransform: "none", fontWeight: 500, color: "black" }}
             >
               Filter
             </Button>
           </Box>
         </Box>
+
         <Table size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: "#f9fafb" }}>
@@ -367,39 +385,61 @@ export default function Dashboard() {
           </TableHead>
           <TableBody>
             {tickets?.map((ticket: any) => (
-              <TableRow key={ticket.id}
+              <TableRow
+                key={ticket.id}
                 sx={{
                   transition: "background 0.3s",
                   "&:hover": {
                     backgroundColor: "#f3f4f6",
                     transform: "translateY(-2px)",
-                    cursor: "pointer"
-                  }
-                }}>
-                <TableCell sx={{ color: "#2563eb", fontWeight: 500, fontSize: 12 }}>{ticket.TICKET_NO}</TableCell>
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                <TableCell
+                  sx={{ color: "#2563eb", fontWeight: 500, fontSize: 12 }}
+                >
+                  {ticket.TICKET_NO}
+                </TableCell>
                 <TableCell>
                   <Box>
-                    <Typography variant="body2" fontWeight="bold" fontSize={13}>
+                    <Typography
+                      variant="body2"
+                      fontWeight="bold"
+                      fontSize={13}
+                    >
                       {ticket.TITLE}
                     </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: 12 }}>
-                        {ticket.DESCRIPTION.length > 20
-                          ? ticket.DESCRIPTION.substring(0, 20) + "..."
-                          : ticket.DESCRIPTION}
-                      </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ fontSize: 12 }}
+                    >
+                      {ticket.DESCRIPTION.length > 20
+                        ? ticket.DESCRIPTION.substring(0, 20) + "..."
+                        : ticket.DESCRIPTION}
+                    </Typography>
                   </Box>
                 </TableCell>
-                <TableCell sx={{fontSize:13}}>{ticket.CATEGORY}</TableCell>
-                <TableCell>{renderPriorityChip(ticket.PRIORITY)}</TableCell>
-                <TableCell>{renderStatusChip(ticket.STATUS)}</TableCell>
-                <TableCell sx={{fontSize:13}}>{formatDate(ticket.UPDATED_AT)}</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>
+                  {ticket.CATEGORY}
+                </TableCell>
+                <TableCell>
+                  {renderPriorityChip(ticket.PRIORITY)}
+                </TableCell>
+                <TableCell>
+                  {renderStatusChip(ticket.STATUS)}
+                </TableCell>
+                <TableCell sx={{ fontSize: 13 }}>
+                  {formatDate(ticket.UPDATED_AT)}
+                </TableCell>
                 <TableCell align="center">
                   <IconButton
                     size="small"
                     sx={{
                       border: "1px solid #e5e7eb",
                       borderRadius: 1,
-                      padding: "4px"
+                      padding: "4px",
                     }}
                   >
                     <RemoveRedEyeOutlinedIcon fontSize="small" />
@@ -409,13 +449,25 @@ export default function Dashboard() {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </Paper>
 
-      <Box sx={{ mb: 2, pt: 3, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography variant="h6" fontWeight="bold" sx={{fontSize: 18}}>
+      {/* Popular Help Articles */}
+      <Box
+        sx={{
+          mb: 2,
+          pt: 2,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: 18 }}>
           Popular Help Articles
         </Typography>
-        <IconButton size="small" sx={{ border: "1px solid #ccc", borderRadius: 1, color: "black" }}>
+        <IconButton
+          size="small"
+          sx={{ border: "1px solid #ccc", borderRadius: 1, color: "black" }}
+        >
           <Typography variant="body2" sx={{ mr: 0.5 }}>
             View All
           </Typography>
@@ -425,8 +477,12 @@ export default function Dashboard() {
 
       <Box
         display="grid"
-        gridTemplateColumns="repeat(4, 1fr)"
-        gap={1}
+        gridTemplateColumns={{
+          xs: "1fr",
+          sm: "1fr 1fr",
+          md: "repeat(4, 1fr)",
+        }}
+        gap={2}
       >
         {articles.map((article, index) => (
           <Card
@@ -438,32 +494,36 @@ export default function Dashboard() {
               height: "100%",
               "&:hover": {
                 boxShadow: 6,
-                color: "#1482dcea"
-              }
+                color: "#1482dcea",
+              },
             }}
           >
             <CardContent>
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                gutterBottom
-              >
+              <Typography variant="subtitle1" fontWeight="bold" fontSize={14} gutterBottom>
                 {article.title}
               </Typography>
-              <Box display="flex"
+              <Box
+                display="flex"
                 justifyContent="space-between"
-                alignItems="center">
+                alignItems="center"
+              >
                 <Typography
                   variant="body2"
                   fontWeight={500}
                   color="text.secondary"
+                  fontSize={12}
                   sx={{ mb: 1 }}
                 >
                   {article.category}
                 </Typography>
                 <Box display="flex">
                   <StarIcon sx={{ color: "#22c55e", fontSize: 18 }} />
-                  <Typography variant="body2" fontWeight={500} sx={{color: "#22c55e"}}>
+                  <Typography
+                    variant="body2"
+                    fontWeight={500}
+                    fontSize={12}
+                    sx={{ color: "#22c55e" }}
+                  >
                     {article.rating}
                   </Typography>
                 </Box>
@@ -472,13 +532,13 @@ export default function Dashboard() {
               <Box
                 display="flex"
                 justifyContent="space-between"
-                alignItems="center">
-
-                <Typography variant="body2" color="text.secondary">
+                alignItems="center"
+              >
+                <Typography variant="body2" color="text.secondary" fontSize={12}>
                   {article.views} Views
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" fontSize={12}>
                   {article.helpful} Helpful
                 </Typography>
               </Box>
@@ -486,8 +546,6 @@ export default function Dashboard() {
           </Card>
         ))}
       </Box>
-    </Box>
-
-
+    </Container>
   );
 }

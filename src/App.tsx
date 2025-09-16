@@ -9,6 +9,7 @@ import DashboardPage from "./pages/DashboardPage";
 import TicketDetails from "./components/CreateTickets/TicketDetails";
 import MyTicketPage from "./pages/MyTicketPage";
 import CreateTicketSummary from "./components/CreateTickets/CreateTicketSummary";
+import FAQPage from "./pages/FAQPage";
 
 const App: React.FC = (): JSX.Element => {
   return (
@@ -26,6 +27,7 @@ const App: React.FC = (): JSX.Element => {
           <Route path="ticketdetails" element={<TicketDetails />} />
           <Route path="summary" element={<CreateTicketSummary/>}/>
         </Route>
+        <Route path="/faq" element={<FAQPage/>} />
       </Routes>
     </TicketProvider>
   );

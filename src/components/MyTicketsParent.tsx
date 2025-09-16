@@ -40,7 +40,7 @@ import {
 import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useMemo, useState } from "react";
 
-// ✅ Ticket type from API
+//Ticket type from API
 type Ticket = {
   ID: number;
   TICKET_NO: string;
@@ -58,7 +58,7 @@ type Ticket = {
   PRIORITY: string;
 };
 
-// ✅ Gradient icon box (for summary cards)
+//Gradient icon box (for summary cards)
 const GradientIconBox: React.FC<{ colors: [string, string]; icon: React.ReactNode }> = ({
   colors,
   icon,
@@ -82,17 +82,18 @@ const GradientIconBox: React.FC<{ colors: [string, string]; icon: React.ReactNod
   );
 };
 
-// ✅ Priority Chip Renderer
+//Priority Chip Renderer
 const renderPriorityChip = (priority: string) => {
   switch (priority.toLowerCase()) {
     case "critical":
       return (
         <Chip
-          icon={<ErrorOutline sx={{ color: "#DC2626 !important" }} />}
+          icon={<ErrorOutline sx={{ color: "#f00a0aff !important" }} />}
           label="Critical"
           size="small"
           sx={{
-            color: "red",
+            color: "#DCFCE7",
+            bgcolor: "#f00a0aff" ,
             border: 1,
             borderRadius: 1,
             backgroundColor: "white",
@@ -103,27 +104,40 @@ const renderPriorityChip = (priority: string) => {
     case "high":
       return (
         <Chip
-          icon={<WarningAmber sx={{ color: "#22C55E !important" }} />}
+          icon={<WarningAmber sx={{ color: "#e8360de1 !important" }} />}
           label="High"
           size="small"
           sx={{
-            bgcolor: "#DCFCE7",
-            color: "#22C55E",
+            bgcolor: "#e8360de1",
+            color: "#DCFCE7",
             fontWeight: 600,
             borderRadius: "999px",
           }}
         />
       );
     case "medium":
-    case "medium-low":
       return (
         <Chip
-          icon={<AccessTime sx={{ color: "#F59E0B !important" }} />}
+          icon={<AccessTime sx={{ color: "#d97706 !important" }} />}
           label={priority}
           size="small"
           sx={{
-            bgcolor: "#FEF3C7",
-            color: "#F59E0B",
+            bgcolor: "#d97706",
+            color: "#FEF3C7",
+            fontWeight: 600,
+            borderRadius: "999px",
+          }}
+        />
+      );
+    case "medium-low":
+      return (
+        <Chip
+          icon={<AccessTime sx={{ color: "#ffc908ff !important" }} />}
+          label={priority}
+          size="small"
+          sx={{
+            bgcolor: "#ffc908ff",
+            color: "#FEF3C7",
             fontWeight: 600,
             borderRadius: "999px",
           }}
@@ -136,8 +150,8 @@ const renderPriorityChip = (priority: string) => {
           label="Low"
           size="small"
           sx={{
-            bgcolor: "#DCFCE7",
-            color: "#15803D",
+            bgcolor: "#16a34a", 
+            color: "#DCFCE7",
             fontWeight: 600,
             borderRadius: "999px",
           }}
@@ -148,7 +162,7 @@ const renderPriorityChip = (priority: string) => {
   }
 };
 
-// ✅ Status Chip Renderer
+//Status Chip Renderer
 const renderStatusChip = (status: string) => {
   switch (status.toLowerCase()) {
     case "open":
@@ -284,7 +298,7 @@ const MyTicketsParent: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 1 }}>
+    <Container maxWidth="xl" sx={{ py: 0 }}>
       {/* Summary cards */}
       <Box
         sx={{
@@ -296,14 +310,14 @@ const MyTicketsParent: React.FC = () => {
         {/* Total Tickets */}
         <Card
           sx={{
-            borderRadius: 3,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
-            minHeight: 160,
+            borderRadius: 2,
+            boxShadow: 3,
+            minHeight: 120,
             width: "100%",
             transition: "all 0.3s ease",
             "&:hover": {
               transform: "translateY(-6px)",
-              boxShadow: "0 12px 28px rgba(0,0,0,0.12)",
+              boxShadow: "0 12px 28px rgba(0,0,0,0.13)",
             },
           }}
         >
@@ -315,10 +329,11 @@ const MyTicketsParent: React.FC = () => {
               justifyContent: "space-between",
               alignItems: "center",
               gap: 2,
+              mt:2,   
             }}
           >
             <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography sx={{ fontSize: 12, color: "#64748B" }}>
+              <Typography sx={{ fontSize: 11, color: "#64748B" }}>
                 TOTAL TICKETS
               </Typography>
               <Typography
@@ -335,7 +350,7 @@ const MyTicketsParent: React.FC = () => {
               </Typography>
               <Typography
                 sx={{
-                  fontSize: 12,
+                  fontSize: 11,
                   color: "#94A3B8",
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
@@ -355,10 +370,12 @@ const MyTicketsParent: React.FC = () => {
         {/* Active Tickets */}
         <Card
           sx={{
-            borderRadius: 3,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
+            borderRadius: 2,
+            boxShadow: 3,
             minHeight: 160,
             width: "100%",
+            pt:0,
+            m: 0,
             transition: "all 0.3s ease",
             "&:hover": {
               transform: "translateY(-6px)",
@@ -374,10 +391,11 @@ const MyTicketsParent: React.FC = () => {
               justifyContent: "space-between",
               alignItems: "center",
               gap: 2,
+              mt:2
             }}
           >
             <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography sx={{ fontSize: 12, color: "#64748B" }}>
+              <Typography sx={{ fontSize: 11, color: "#64748B" }}>
                 ACTIVE TICKETS
               </Typography>
               <Typography
@@ -394,7 +412,7 @@ const MyTicketsParent: React.FC = () => {
               </Typography>
               <Typography
                 sx={{
-                  fontSize: 12,
+                  fontSize: 11,
                   color: "#94A3B8",
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
@@ -414,10 +432,12 @@ const MyTicketsParent: React.FC = () => {
         {/* Resolved Tickets */}
         <Card
           sx={{
-            borderRadius: 3,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
+            borderRadius: 2,
+            boxShadow: 3,
             minHeight: 160,
             width: "100%",
+            pt:0,
+            m: 0,
             transition: "all 0.3s ease",
             "&:hover": {
               transform: "translateY(-6px)",
@@ -433,10 +453,11 @@ const MyTicketsParent: React.FC = () => {
               justifyContent: "space-between",
               alignItems: "center",
               gap: 2,
+              mt:2
             }}
           >
             <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography sx={{ fontSize: 12, color: "#64748B" }}>
+              <Typography sx={{ fontSize: 11, color: "#64748B" }}>
                 RESOLVED TICKETS
               </Typography>
               <Typography
@@ -453,7 +474,7 @@ const MyTicketsParent: React.FC = () => {
               </Typography>
               <Typography
                 sx={{
-                  fontSize: 12,
+                  fontSize: 11,
                   color: "#94A3B8",
                   whiteSpace: "nowrap",
                   textOverflow: "ellipsis",
@@ -476,17 +497,17 @@ const MyTicketsParent: React.FC = () => {
         sx={{
           p: 2.5,
           mt: 3,
-          borderRadius: 3,
-          boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
+          borderRadius: 2,
+          boxShadow: 3,
         }}
       >
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1.5 }}>
+        <Stack direction="row" spacing={1.5} alignItems="center">
           <Search sx={{ color: "#2563EB" }} />
-          <Typography sx={{ fontWeight: 700, fontSize: "1.1rem", color: "#0F172A" }}>
+          <Typography sx={{ fontWeight: 700, fontSize: "15px", color: "#0F172A" }}>
             Search & Filter Tickets
           </Typography>
         </Stack>
-        <Divider sx={{ my: 2.5 }} />
+        <Divider sx={{ my: 2 }} />
         <Box
           sx={{
             display: "flex",
@@ -512,7 +533,7 @@ const MyTicketsParent: React.FC = () => {
             }}
             sx={{
               flex: "1 1 auto",
-              "& .MuiInputBase-root": { height: 44, borderRadius: 2 },
+              "& .MuiInputBase-root": { height: 41, borderRadius: 1, fontSize: 13 },
             }}
           />
           <Stack direction="row" spacing={1} alignItems="center">
@@ -523,7 +544,7 @@ const MyTicketsParent: React.FC = () => {
                 width: { xs: "100%", md: 220 },
               }}
             >
-              <InputLabel>All Priorities</InputLabel>
+              <InputLabel >All Priorities</InputLabel>
               <Select
                 label="All Priorities"
                 value={priorityFilter}
@@ -542,7 +563,7 @@ const MyTicketsParent: React.FC = () => {
                   />
                 }
                 sx={{
-                  "& .MuiOutlinedInput-root": { height: 44, borderRadius: 2 },
+                  "& .MuiOutlinedInput-root": { height: 41, borderRadius: 1 },
                 }}
               >
                 <MenuItem value="all">All Priorities</MenuItem>
