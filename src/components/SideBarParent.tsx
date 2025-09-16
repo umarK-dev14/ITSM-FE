@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Drawer,
   List,
@@ -19,7 +19,7 @@ import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import MessageIcon from "@mui/icons-material/Message";
+// import MessageIcon from "@mui/icons-material/Message";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -41,6 +41,10 @@ export default function SideBarParent({
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
+
+  useEffect(() => {
+    localStorage.setItem("sidebar-collapsed", JSON.stringify(isCollapsed));
+  }, [isCollapsed]);
 
   const getMenuButtonStyle = (isSignOut = false) => ({
     borderRadius: "10px",
@@ -125,6 +129,11 @@ export default function SideBarParent({
                 to={item.to}
                 selected={location.pathname === item.to}
                 sx={getMenuButtonStyle(false)}
+                onClick={() => {
+                  if (isSmallScreen) {
+                    toggleSidebar();
+                  }
+                }}
               >
                 <ListItemIcon sx={menuIconStyle}>{item.icon}</ListItemIcon>
                 {!isCollapsed && <ListItemText primary={item.text} />}

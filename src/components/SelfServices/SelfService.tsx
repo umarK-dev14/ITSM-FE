@@ -5,7 +5,6 @@ import ShieldIcon from "@mui/icons-material/Shield";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
-import { motion } from "framer-motion";
 import { Typography } from "@mui/material";
 import SelfKnowledgeBase from "./SelfKnowledgeBase";
 
@@ -38,12 +37,6 @@ const actions = [
 
 const SelfService: React.FC = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: -30 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
       <Box sx={{ p: 2, backgroundColor: "#fff", minHeight: "100vh" }}>
         <SelfHeader />
         <Box
@@ -139,7 +132,6 @@ const SelfService: React.FC = () => {
         {/* Knowledge Base */}
         <SelfKnowledgeBase />
       </Box>
-    </motion.div>
   );
 };
 

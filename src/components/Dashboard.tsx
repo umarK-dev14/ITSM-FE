@@ -78,6 +78,7 @@ const renderStatusChip = (status: StatusType) => {
 interface HelpArticle {
   title: string;
   category: string;
+  description: string;
   rating: number;
   views: number;
   helpful: number;
@@ -87,6 +88,7 @@ export const articles: HelpArticle[] = [
   {
     title: "How To Connect To VPN",
     category: "Network",
+    description: "Step-by-step guide to connect to the company VPN...",
     rating: 4.5,
     views: 245,
     helpful: 23,
@@ -94,6 +96,7 @@ export const articles: HelpArticle[] = [
   {
     title: "Password Reset Self-Service",
     category: "Security",
+    description: "Learn how to reset your password without contacting IT...",
     rating: 4.2,
     views: 156,
     helpful: 18,
@@ -101,6 +104,7 @@ export const articles: HelpArticle[] = [
   {
     title: "Email Setup On Mobile Devices",
     category: "Email",
+    description: "Configure your work email on iPhone and Android devices...",
     rating: 4.7,
     views: 189,
     helpful: 31,
@@ -108,6 +112,7 @@ export const articles: HelpArticle[] = [
   {
     title: "Software Installation Requests",
     category: "Software",
+    description: "How to request software installation and what is approved...",
     rating: 4.1,
     views: 98,
     helpful: 12,
@@ -115,6 +120,7 @@ export const articles: HelpArticle[] = [
    {
     title: "Software Installation Requests",
     category: "Software",
+    description: "How to request software installation and what is approved....",
     rating: 4.1,
     views: 98,
     helpful: 12,
@@ -122,6 +128,7 @@ export const articles: HelpArticle[] = [
     {
     title: "How To Connect To VPN",
     category: "Network",
+    description: "Step-by-step guide to connect to the company VPN...",
     rating: 4.5,
     views: 245,
     helpful: 23,

@@ -206,9 +206,9 @@ const SelfKnowledgeBase: React.FC = () => {
 
                 {/* Description */}
                 <Typography
-                  sx={{ fontSize: "12px", color: "#6b7280", mt: 5, mb: 2 }}
+                  sx={{ fontSize: "12px", color: "#838fa2", mt: 5, mb: 2 }}
                 >
-                  Hi, hello how are you
+                  {article.description}
                 </Typography>
 
                 {/* Stats (views, rating, likes) */}

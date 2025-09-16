@@ -37,6 +37,7 @@ import {
   Bolt,
   Close,
 } from "@mui/icons-material";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useMemo, useState } from "react";
 
@@ -283,13 +284,13 @@ const MyTicketsParent: React.FC = () => {
     );
   }, [tickets, tab, searchQuery, priorityFilter]);
 
-  if (loading) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
-        <Typography>Loading tickets...</Typography>
-      </Box>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+  //       <Typography>Loading tickets...</Typography>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Container maxWidth="xl" sx={{ py: 1 }}>
@@ -634,7 +635,7 @@ const MyTicketsParent: React.FC = () => {
                 borderRadius: 2,
                 fontSize: 13,
                 fontWeight: 700,
-                bgcolor: tab === 0 ? "rgba(255,255,255,0.25)" : "#22C55E",
+                bgcolor: tab === 0 ? "rgba(255,255,255,0.25)" : "#fff",
                 color: "#fff",
               }}
             >
@@ -654,7 +655,7 @@ const MyTicketsParent: React.FC = () => {
               cursor: "pointer",
               background:
                 tab === 1
-                  ? "linear-gradient(90deg, #10B981, #10B981)"
+                  ? "#43d36b"
                   : "transparent",
               color: tab === 1 ? "#fff" : "#0F172A",
               fontWeight: 600,
@@ -662,7 +663,7 @@ const MyTicketsParent: React.FC = () => {
               transition: "all 0.2s ease-in-out",
             }}
           >
-            <CheckCircle sx={{ fontSize: 18, mr: 1 }} />
+            <TaskAltIcon sx={{ fontSize: 18, mr: 1 }} />
             Resolved Tickets
             <Box
               sx={{
@@ -672,7 +673,7 @@ const MyTicketsParent: React.FC = () => {
                 borderRadius: 2,
                 fontSize: 13,
                 fontWeight: 700,
-                bgcolor: "#22C55E",
+                bgcolor: "#43d36b",
                 color: "#fff",
               }}
             >
