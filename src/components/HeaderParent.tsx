@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AddIcon from "@mui/icons-material/Add";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useLocation } from "react-router-dom";
 import MenuToggle from "./MenuToggle";
 
@@ -70,13 +69,13 @@ export default function HeaderParent({
           <Box>
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", color: "#111827", fontSize: "22px" }}
+              sx={{ fontWeight: "bold", color: "#111827", fontSize: "20px" }}
             >
               {title}
             </Typography>
             <Typography
               variant="body2"
-              sx={{ color: "gray", fontSize: "13px", mt: 0.5 }}
+              sx={{ color: "gray", fontSize: "11px"}}
             >
               Welcome back, Alex
             </Typography>

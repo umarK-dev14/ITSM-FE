@@ -17,15 +17,17 @@ import {
   Container,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import StarIcon from "@mui/icons-material/Star";
+import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
+import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
+import StarIcon from "@mui/icons-material/Star" ;
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type PriorityLevel = "High" | "Medium" | "Medium-Low" | "Critical" | "Low";
 type StatusType = "Open" | "Closed" | "Pending";
@@ -117,27 +119,29 @@ export const articles: HelpArticle[] = [
     views: 98,
     helpful: 12,
   },
-   {
-    title: "Software Installation Requests",
-    category: "Software",
-    description: "How to request software installation and what is approved....",
-    rating: 4.1,
-    views: 98,
-    helpful: 12,
-  },
-    {
-    title: "How To Connect To VPN",
-    category: "Network",
-    description: "Step-by-step guide to connect to the company VPN...",
-    rating: 4.5,
-    views: 245,
-    helpful: 23,
-  },
+  //  {
+  //   title: "Software Installation Requests",
+  //   category: "Software",
+  //   description: "How to request software installation and what is approved....",
+  //   rating: 4.1,
+  //   views: 98,
+  //   helpful: 12,
+  // },
+  //   {
+  //   title: "How To Connect To VPN",
+  //   category: "Network",
+  //   description: "Step-by-step guide to connect to the company VPN...",
+  //   rating: 4.5,
+  //   views: 245,
+  //   helpful: 23,
+  // },
 ];
 
 export default function Dashboard() {
   const { fetchTickets } = useTicketAPI();
   const [tickets, setTickets] = useState([] as any);
+
+  const navigate = useNavigate()
 
   const initiateFetchTickets = async () => {
     try {
@@ -163,7 +167,9 @@ export default function Dashboard() {
       label: "MY OPEN TICKETS",
       value: filteredTickets?.length,
       subtext: "Active Requests",
-      icon: <ConfirmationNumberIcon sx={{ color: "#fff", fontSize: 26 }} />,
+      icon: (
+        <ConfirmationNumberOutlinedIcon sx={{ color: "#fff", fontSize: 26 }} />
+      ),
       bg: "linear-gradient(135deg, #3b82f6, #22c55e)",
     },
     {
@@ -177,14 +183,14 @@ export default function Dashboard() {
       label: "RESOLUTION RATE",
       value: "—",
       subtext: "First Contact Resolution",
-      icon: <CheckCircleIcon sx={{ color: "#fff", fontSize: 26 }} />,
+      icon: <TaskAltOutlinedIcon sx={{ color: "#fff", fontSize: 26 }} />,
       bg: "linear-gradient(135deg, #6366f1, #818cf8)",
     },
     {
       label: "SERVICE RATING",
       value: "—",
       subtext: "Your Experience",
-      icon: <StarIcon sx={{ color: "#fff", fontSize: 26 }} />,
+      icon: <StarBorderOutlinedIcon sx={{ color: "#fff", fontSize: 26 }} />,
       bg: "linear-gradient(135deg, #3b82f6, #60a5fa)",
     },
   ];
@@ -199,6 +205,7 @@ export default function Dashboard() {
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           mb: 1,
+          mt: 3,
           fontSize: 21,
         }}
       >
@@ -241,11 +248,7 @@ export default function Dashboard() {
       />
 
       {/* Service Overview Cards */}
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        sx={{ mb: 1, fontSize: 18 }}
-      >
+      <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, fontSize: 18 }}>
         Service Overview
       </Typography>
 
@@ -256,7 +259,7 @@ export default function Dashboard() {
             xs: "1fr",
             sm: "1fr 1fr",
             md: "1fr 1fr",
-            lg: "repeat(4, 1fr)"
+            lg: "repeat(4, 1fr)",
           },
           gap: 3,
           mb: 3,
@@ -277,16 +280,15 @@ export default function Dashboard() {
               cursor: "pointer",
               "&:hover": {
                 boxShadow: 6,
-                "& .iconWrapper" : {
+                "& .iconWrapper": {
                   transform: "scale(1.1)",
-                  filter:
-                  "drop-shadow(0 2px 4px rgba(241, 240, 240, 0.2))"
+                  filter: "drop-shadow(0 2px 4px rgba(241, 240, 240, 0.2))",
                 },
-                "& .iconWrapper svg" : {
+                "& .iconWrapper svg": {
                   filter: "none",
                   color: "none",
-                }
-              }
+                },
+              },
             }}
           >
             <CardContent
@@ -309,10 +311,29 @@ export default function Dashboard() {
                 >
                   {item.label}
                 </Typography>
-                <Typography variant="h6" sx={{ mt: 0.5, fontWeight: 700, lineHeight: 1, color: "#0F172A", whiteSpace: "nowrap" }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mt: 0.5,
+                    fontWeight: 700,
+                    lineHeight: 1,
+                    color: "#0F172A",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {item.value}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{fontSize: 11, color: "#94A3B8", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    fontSize: 11,
+                    color: "#94A3B8",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                  }}
+                >
                   {item.subtext}
                 </Typography>
               </Box>
@@ -339,7 +360,14 @@ export default function Dashboard() {
       </Box>
 
       {/* Active Tickets Table */}
-      <Paper sx={{ borderRadius: 3, boxShadow: 2, p: 2, "&:hover": {boxShadow: 6} }}>
+      <Paper
+        sx={{
+          borderRadius: 3,
+          boxShadow: 2,
+          p: 2,
+          "&:hover": { boxShadow: 6 },
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -359,7 +387,13 @@ export default function Dashboard() {
             <Button
               variant="contained"
               size="small"
-              sx={{ textTransform: "none", fontWeight: "500" }}
+              sx={{
+                textTransform: "none",
+                fontWeight: "500",
+                bgcolor: "#3c6cfc",
+                borderRadius: 2,
+                fontSize:"12px"
+              }}
             >
               {tickets.length} Active
             </Button>
@@ -421,11 +455,7 @@ export default function Dashboard() {
                 </TableCell>
                 <TableCell>
                   <Box>
-                    <Typography
-                      variant="body2"
-                      fontWeight="bold"
-                      fontSize={13}
-                    >
+                    <Typography variant="body2" fontWeight="bold" fontSize={13}>
                       {ticket.TITLE}
                     </Typography>
                     <Typography
@@ -478,9 +508,10 @@ export default function Dashboard() {
         </Typography>
         <IconButton
           size="small"
-          sx={{ border: "1px solid #ccc", borderRadius: 1, color: "black" }}
+          onClick={() => navigate("/self-service")}
+          sx={{ border: "1px solid #ccc", borderRadius: 2, color: "black" }}
         >
-          <Typography variant="body2" sx={{ mr: 0.5 }}>
+          <Typography variant="body2" sx={{ mr: 0.5, fontSize: "13px" }}>
             View All
           </Typography>
           <ArrowForwardIcon fontSize="small" />
@@ -499,6 +530,7 @@ export default function Dashboard() {
         {articles.map((article, index) => (
           <Card
             key={index}
+            onClick={()=> navigate("/self-service")}
             sx={{
               borderRadius: 3,
               boxShadow: 1,
@@ -506,12 +538,18 @@ export default function Dashboard() {
               height: "100%",
               "&:hover": {
                 boxShadow: 6,
-                color: "#1482dcea",
+                color: "#3c6cfc",
               },
+              cursor:"pointer"
             }}
           >
             <CardContent>
-              <Typography variant="subtitle1" fontWeight="bold" fontSize={14} gutterBottom>
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                fontSize={14}
+                gutterBottom
+              >
                 {article.title}
               </Typography>
               <Box
@@ -529,28 +567,36 @@ export default function Dashboard() {
                   {article.category}
                 </Typography>
                 <Box display="flex">
-                  <StarIcon sx={{ color: "#22c55e", fontSize: 18 }} />
+                  <StarIcon sx={{ color: "#47d16a", fontSize: 13 }} />
                   <Typography
                     variant="body2"
                     fontWeight={500}
-                    fontSize={12}
-                    sx={{ color: "#22c55e" }}
+                    fontSize={10}
+                    sx={{ color: "#47d16a" }}
                   >
                     {article.rating}
                   </Typography>
                 </Box>
-              </Box>
+              </Box>  
 
               <Box
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Typography variant="body2" color="text.secondary" fontSize={12}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  fontSize={12}
+                >
                   {article.views} Views
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary" fontSize={12}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  fontSize={12}
+                >
                   {article.helpful} Helpful
                 </Typography>
               </Box>
