@@ -14,14 +14,14 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import HomeFilledIcon from "@mui/icons-material/HomeFilled";
-import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 // import MessageIcon from "@mui/icons-material/Message";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
@@ -50,14 +50,29 @@ export default function SideBarParent({
     borderRadius: "10px",
     justifyContent: isCollapsed ? "center" : "flex-start",
     px: isCollapsed ? 0 : 2,
+    py: 0.75,
+    mx: 2,
+    // my: 0.5,
     width: "100%",
     "& .MuiListItemText-primary": { fontSize: 13 },
     "&:hover": {
       background: isSignOut
         ? "linear-gradient(90deg, #ef4444, #dc2626)"
-        : "linear-gradient(90deg, #3b82f6, #22c55e)",
+        : "#334155",
       color: "white",
       "& .MuiListItemIcon-root": { color: "white" },
+    },
+    "&.Mui-selected": {
+      background: isSignOut
+        ? "linear-gradient(90deg, #ef4444, #dc2626)"
+        : "linear-gradient(90deg, #3b82f6, #22c55e)", // selected (active route)
+      color: "white",
+      "& .MuiListItemIcon-root": { color: "white" },
+      "&:hover": {
+        background: isSignOut
+          ? "linear-gradient(90deg, #ef4444, #dc2626)"
+          : "linear-gradient(90deg, #3b82f6, #22c55e)", // keep gradient on hover if selected
+      },
     },
   });
 
@@ -80,7 +95,7 @@ export default function SideBarParent({
       >
         {!isCollapsed && (
           <Box display="flex" alignItems="center" gap={1}>
-            <ConfirmationNumberIcon
+            <ConfirmationNumberOutlinedIcon
               sx={{
                 color: "white",
                 backgroundColor: "#3b82f6",
@@ -91,7 +106,7 @@ export default function SideBarParent({
             />
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", color: "white", fontSize: 15 }}
+              sx={{ fontWeight: "bold", color: "white", fontSize: 13 }}
             >
               ServiceDesk
             </Typography>
@@ -108,18 +123,36 @@ export default function SideBarParent({
       <Box sx={{ flexGrow: 1 }}>
         <List>
           {[
-            { text: "Dashboard", icon: <HomeFilledIcon />, to: "/dashboard" },
+            {
+              text: "Dashboard",
+              icon: <HomeOutlinedIcon sx={{ fontSize: "20px" }} />,
+              to: "/dashboard",
+            },
             {
               text: "My Tickets",
-              icon: <ConfirmationNumberIcon />,
+              icon: (
+                <ConfirmationNumberOutlinedIcon sx={{ fontSize: "17px" }} />
+              ),
               to: "/tickets",
             },
-            { text: "Create Ticket", icon: <AddIcon />, to: "/create-ticket" },
-            { text: "Self Service", icon: <SearchIcon />, to: "/self-service" },
-            { text: "FAQ", icon: <HelpOutlineIcon />, to: "/faq" },
+            {
+              text: "Create Ticket",
+              icon: <AddIcon sx={{ fontSize: "17px" }} />,
+              to: "/create-ticket/requesttype",
+            },
+            {
+              text: "Self Service",
+              icon: <SearchIcon sx={{ fontSize: "17px" }} />,
+              to: "/self-service",
+            },
+            {
+              text: "FAQ",
+              icon: <HelpOutlineIcon sx={{ fontSize: "17px" }} />,
+              to: "/faq",
+            },
             {
               text: "AI Assistant",
-              icon: <ChatBubbleOutlineIcon />,
+              icon: <ChatBubbleOutlineIcon sx={{ fontSize: "17px" }} />,
               to: "/assistant",
             },
           ].map((item) => (
@@ -181,13 +214,13 @@ export default function SideBarParent({
           <ListItem disablePadding>
             <ListItemButton sx={getMenuButtonStyle(true)}>
               <ListItemIcon sx={{ ...menuIconStyle, fontSize: 11 }}>
-                <ExitToAppIcon sx={{ fontSize: 15 }} />
+                <LogoutOutlinedIcon sx={{ fontSize: 15 }} />
               </ListItemIcon>
               {!isCollapsed && <ListItemText primary="Sign Out" />}
             </ListItemButton>
           </ListItem>
         </List>
-      </Box>
+      </Box>  
     </Box>
   );
 
@@ -219,7 +252,7 @@ export default function SideBarParent({
             "& .MuiDrawer-paper": {
               width: isCollapsed ? 60 : drawerWidth,
               boxSizing: "border-box",
-              backgroundColor: "#0f1933e4",
+              backgroundColor: "#253144",
               color: "white",
               transition: "width 0.3s ease",
             },
