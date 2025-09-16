@@ -8,13 +8,13 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Paper,
   Chip,
   IconButton,
   Button,
+  Container,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
@@ -27,16 +27,16 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useTicketAPI } from "../Apis/ticket.API";
 import { useEffect, useState } from "react";
 
-type PriorityLevel = "High" | "Medium" | "Medium-Low" | "Critical";
+type PriorityLevel = "High" | "Medium" | "Medium-Low" | "Critical" | "Low";
 type StatusType = "Open" | "Closed" | "Pending";
-
 
 const renderPriorityChip = (priority: PriorityLevel) => {
   const colorMap: Record<PriorityLevel, string> = {
-    High: "#16a34a",
+    High: "#e8360de1",
     Medium: "#d97706",
     "Medium-Low": "#ffc908ff",
-    Critical: "#dc2626",
+    Critical: "#f00a0aff",
+    Low: "#16a34a",
   };
 
   return (
@@ -188,8 +188,9 @@ export default function Dashboard() {
       bg: "linear-gradient(135deg, #3b82f6, #60a5fa)",
     },
   ];
+
   return (
-    <Box sx={{ marginRight: 6 }}>
+    <Container maxWidth={false} disableGutters>
       <Typography
         variant="h5"
         fontWeight="bold"
@@ -212,6 +213,7 @@ export default function Dashboard() {
         Manage Your IT Requests And Track Service Status
       </Typography>
 
+      {/* Search Bar */}
       <TextField
         placeholder="Search Tickets, Knowledge Base, Or Services..."
         variant="outlined"
@@ -238,7 +240,12 @@ export default function Dashboard() {
         }}
       />
 
-      <Typography variant="h6" fontWeight="bold" sx={{ mb: 1, fontSize: 18 }}>
+      {/* Service Overview Cards */}
+      <Typography
+        variant="h6"
+        fontWeight="bold"
+        sx={{ mb: 1, fontSize: 18 }}
+      >
         Service Overview
       </Typography>
 
@@ -248,7 +255,8 @@ export default function Dashboard() {
           gridTemplateColumns: {
             xs: "1fr",
             sm: "1fr 1fr",
-            md: "1fr 1fr 1fr 1fr",
+            md: "1fr 1fr",
+            lg: "repeat(4, 1fr)"
           },
           gap: 3,
           mb: 3,
@@ -260,7 +268,7 @@ export default function Dashboard() {
             key={i}
             sx={{
               width: "100%",
-              height: 120,
+              minHeight: 120,
               borderRadius: 3,
               boxShadow: 2,
               display: "flex",
@@ -269,15 +277,16 @@ export default function Dashboard() {
               cursor: "pointer",
               "&:hover": {
                 boxShadow: 6,
-                "& .iconWrapper": {
+                "& .iconWrapper" : {
                   transform: "scale(1.1)",
-                  filter: "drop-shadow(0 2px 4px rgba(241, 240, 240, 0.2))",
+                  filter:
+                  "drop-shadow(0 2px 4px rgba(241, 240, 240, 0.2))"
                 },
-                "& .iconWrapper svg": {
+                "& .iconWrapper svg" : {
                   filter: "none",
                   color: "none",
-                },
-              },
+                }
+              }
             }}
           >
             <CardContent
@@ -288,6 +297,7 @@ export default function Dashboard() {
                 width: "100%",
                 height: "100%",
                 py: 2,
+                px: 2,
               }}
             >
               <Box>
@@ -295,13 +305,14 @@ export default function Dashboard() {
                   variant="body2"
                   color="text.secondary"
                   fontWeight={500}
+                  fontSize={12}
                 >
                   {item.label}
                 </Typography>
-                <Typography variant="h6" sx={{ mt: 0.5 }}>
+                <Typography variant="h6" sx={{ mt: 0.5, fontWeight: 700, lineHeight: 1, color: "#0F172A", whiteSpace: "nowrap" }}>
                   {item.value}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{fontSize: 11, color: "#94A3B8", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
                   {item.subtext}
                 </Typography>
               </Box>
@@ -327,10 +338,8 @@ export default function Dashboard() {
         ))}
       </Box>
 
-      <TableContainer
-        component={Paper}
-        sx={{ borderRadius: 3, boxShadow: 2, p: 2 }}
-      >
+      {/* Active Tickets Table */}
+      <Paper sx={{ borderRadius: 3, boxShadow: 2, p: 2, "&:hover": {boxShadow: 6} }}>
         <Box
           sx={{
             display: "flex",
@@ -365,6 +374,7 @@ export default function Dashboard() {
             </Button>
           </Box>
         </Box>
+
         <Table size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: "#f9fafb" }}>
@@ -411,7 +421,11 @@ export default function Dashboard() {
                 </TableCell>
                 <TableCell>
                   <Box>
-                    <Typography variant="body2" fontWeight="bold" fontSize={13}>
+                    <Typography
+                      variant="body2"
+                      fontWeight="bold"
+                      fontSize={13}
+                    >
                       {ticket.TITLE}
                     </Typography>
                     <Typography
@@ -447,12 +461,13 @@ export default function Dashboard() {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </Paper>
 
+      {/* Popular Help Articles */}
       <Box
         sx={{
           mb: 2,
-          pt: 3,
+          pt: 2,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -472,7 +487,15 @@ export default function Dashboard() {
         </IconButton>
       </Box>
 
-      <Box display="grid" gridTemplateColumns="repeat(4, 1fr)" gap={1}>
+      <Box
+        display="grid"
+        gridTemplateColumns={{
+          xs: "1fr",
+          sm: "1fr 1fr",
+          md: "repeat(4, 1fr)",
+        }}
+        gap={2}
+      >
         {articles.map((article, index) => (
           <Card
             key={index}
@@ -488,7 +511,7 @@ export default function Dashboard() {
             }}
           >
             <CardContent>
-              <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+              <Typography variant="subtitle1" fontWeight="bold" fontSize={14} gutterBottom>
                 {article.title}
               </Typography>
               <Box
@@ -500,6 +523,7 @@ export default function Dashboard() {
                   variant="body2"
                   fontWeight={500}
                   color="text.secondary"
+                  fontSize={12}
                   sx={{ mb: 1 }}
                 >
                   {article.category}
@@ -509,6 +533,7 @@ export default function Dashboard() {
                   <Typography
                     variant="body2"
                     fontWeight={500}
+                    fontSize={12}
                     sx={{ color: "#22c55e" }}
                   >
                     {article.rating}
@@ -521,11 +546,11 @@ export default function Dashboard() {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" fontSize={12}>
                   {article.views} Views
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" fontSize={12}>
                   {article.helpful} Helpful
                 </Typography>
               </Box>
@@ -533,6 +558,6 @@ export default function Dashboard() {
           </Card>
         ))}
       </Box>
-    </Box>
+    </Container>
   );
 }
