@@ -78,15 +78,17 @@ const renderStatusChip = (status: StatusType) => {
 interface HelpArticle {
   title: string;
   category: string;
+  description: string;
   rating: number;
   views: number;
   helpful: number;
 }
 
-const articles: HelpArticle[] = [
+export const articles: HelpArticle[] = [
   {
     title: "How To Connect To VPN",
     category: "Network",
+    description: "Step-by-step guide to connect to the company VPN...",
     rating: 4.5,
     views: 245,
     helpful: 23,
@@ -94,6 +96,7 @@ const articles: HelpArticle[] = [
   {
     title: "Password Reset Self-Service",
     category: "Security",
+    description: "Learn how to reset your password without contacting IT...",
     rating: 4.2,
     views: 156,
     helpful: 18,
@@ -101,6 +104,7 @@ const articles: HelpArticle[] = [
   {
     title: "Email Setup On Mobile Devices",
     category: "Email",
+    description: "Configure your work email on iPhone and Android devices...",
     rating: 4.7,
     views: 189,
     helpful: 31,
@@ -108,9 +112,26 @@ const articles: HelpArticle[] = [
   {
     title: "Software Installation Requests",
     category: "Software",
+    description: "How to request software installation and what is approved...",
     rating: 4.1,
     views: 98,
     helpful: 12,
+  },
+   {
+    title: "Software Installation Requests",
+    category: "Software",
+    description: "How to request software installation and what is approved....",
+    rating: 4.1,
+    views: 98,
+    helpful: 12,
+  },
+    {
+    title: "How To Connect To VPN",
+    category: "Network",
+    description: "Step-by-step guide to connect to the company VPN...",
+    rating: 4.5,
+    views: 245,
+    helpful: 23,
   },
 ];
 
@@ -127,7 +148,6 @@ export default function Dashboard() {
       console.log("Error on fetch Tickets", error);
     }
   };
-
   useEffect(() => {
     initiateFetchTickets();
   }, [fetchTickets]);
@@ -135,11 +155,9 @@ export default function Dashboard() {
   function formatDate(timestamp: Date) {
     return new Date(timestamp).toISOString().split("T")[0];
   }
-
   const filteredTickets = tickets?.filter(
     (ticket: any) => ticket.STATUS === "open"
   );
-
   const serviceItems = [
     {
       label: "MY OPEN TICKETS",
@@ -242,7 +260,7 @@ export default function Dashboard() {
           },
           gap: 3,
           mb: 3,
-          width: "100%"
+          width: "100%",
         }}
       >
         {serviceItems.map((item, i) => (
@@ -421,15 +439,9 @@ export default function Dashboard() {
                     </Typography>
                   </Box>
                 </TableCell>
-                <TableCell sx={{ fontSize: 13 }}>
-                  {ticket.CATEGORY}
-                </TableCell>
-                <TableCell>
-                  {renderPriorityChip(ticket.PRIORITY)}
-                </TableCell>
-                <TableCell>
-                  {renderStatusChip(ticket.STATUS)}
-                </TableCell>
+                <TableCell sx={{ fontSize: 13 }}>{ticket.CATEGORY}</TableCell>
+                <TableCell>{renderPriorityChip(ticket.PRIORITY)}</TableCell>
+                <TableCell>{renderStatusChip(ticket.STATUS)}</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>
                   {formatDate(ticket.UPDATED_AT)}
                 </TableCell>
